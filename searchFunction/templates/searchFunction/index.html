@@ -1,0 +1,223 @@
+<!doctype html>
+{% load staticfiles %}
+<html>
+<title>HIVE</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/
+font-awesome.min.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+<style>
+/*Search Bar Style*/
+body {
+    font-family: Arial;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+form.example input[type=text] {
+    padding: 10px;
+    font-size: 17px;
+    border: 1px solid grey;
+    float: left;
+    width: 80%;
+    background: #f1f1f1;
+}
+
+form.example button {
+    float: left;
+    width: 20%;
+    padding: 10px;
+    background: #2196F3;
+    color: white;
+    font-size: 17px;
+    border: 1px solid grey;
+    border-left: none;
+    cursor: pointer;
+}
+
+form.example button:hover {
+    background: #0b7dda;
+}
+
+form.example::after {
+    content: "";
+    clear: both;
+    display: table;
+}
+/*Positioning*/
+
+#navbar{
+    position: relative;
+}
+#headerImage{
+    position: absolute;
+    top: 210px;
+}
+#searchbar{
+    position: absolute;
+    top: 500px;
+}
+#results{
+    position: relative;
+    top:450px;
+}
+
+</style>
+<body>
+
+<!-- Navbar (sit on top) -->
+<div id="navbar" class="w3-top">
+    <div class="w3-bar w3-white w3-padding w3-card" style="letter-spacing:4px;">
+        <a href="/" class="w3-bar-item w3-button">HIVE</a>
+<!-- Right-sided navbar links. Hide them on small screens-->        
+        <div class="w3-right w3-hide-small">
+            <a href="#about" class="w3-bar-item w3-button" data-toggle="modal" data-target="#aboutModal">ABOUT</a>
+            <a href="#contact" class="w3-bar-item w3-button" data-toggle="modal" data-target="#helpModal">HELP</a>
+        </div>
+    </div>
+</div>
+
+
+
+
+<!-- Header Image (HIVE) -->
+<div id="headerImage" class="w3-display-middle w3-image">
+        <img src="{% static 'hiveLogo.png' %}" alt="HIVE"/>
+</div>
+<!-- Page content -->
+<div id="searchbar" class="w3-display-middle w3-container" style="height:180px; ">
+    <form class ="example" type="get" action="/results/" style="margin:auto;max-width:300px">
+    <input  id="search_box" type="text" name="search_box"  placeholder="Search..." >
+    <button type="submit"><i class="fa fa-search"></i></button>
+</form>
+</div>
+
+    <div id="results" class="w3-container">
+
+             <div class="col-md-8">
+                
+                {% block content %}
+                {% endblock %}
+
+            </div>
+
+    </div>
+		<!-- Begin Modals -->
+
+		<!-- Modal that provides information about HIVE -->
+	  <div class="modal fade" id="aboutModal" role="dialog">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">HIVE</h4>
+        </div>
+        <div class="modal-body">
+          			<div class="modal-body">
+				<div class="media">
+                <p class="lead">
+					HIVE provides principal investigators with the tools they need to find suitable collaborators and funding relevant to their
+					research.
+				</p>
+				<p>
+					<em>
+						We accomplish this through clever application of new and traditional information retrieval methods: A basic keyword search
+						and conceptual search via LSI.<br>
+						Typical keyword searches are provided to give you "directly associated" results relative to your queries.
+						However, through conceptual search we provide you with the ability to find previously invisible implied associations.
+					</em>
+				</p>
+
+				<h3>Who's Behind This?</h3>
+					<div class="media">
+						<a class="pull-left" href="#">
+							<img class="media-object" data-src="res/images/um.png">
+						</a>
+						<div class="media-body">
+							<h4 class="media-heading">The Bioinformatics Dept @ The University of Memphis</h4>
+						</div>
+					</div>
+</div>
+			</div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  		<!-- Modal that provides help information for the current page -->
+  		  <div class="modal fade" id="helpModal" role="dialog">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">HIVE</h4>
+        </div>
+			<div class="modal-body">
+				<b>Help Index</b>
+				<ul>
+					<li>Search Interface - Overview</li>
+					<li>Search Interface - Search Methods</li>
+					<li>Search Interface - Filters</li>
+				</ul>
+				<br>
+				<br>
+
+				<h3>Search Interface(Overview):</h3>
+
+
+				<p style="text-indent: 3em;">The search interface is the first way in which you'll interact with HIVE. It has several components that allow you to specify what datasets you'd like to search and how you'd like to search them. The interface is composed of 2 drop down lists, a text input for entering queries, and a submit button. The first drop down list, labeled as "Keyword" by default, allows you to select your search method. The second drop down list, labeled as "Filter" by default, allows you to specify the datasets you'd like to search within.
+				<br>
+				<br>
+				<h3>Search Interface (Search Methods):</h3>
+
+				<p>The search methods available at this time are a keyword search algorithm, and an LSI search algorithm.  What’s the difference between the two?</p>
+				<ul>
+					<li>Keyword Search - A keyword search is what most users will be familiar with. It looks for direct associations between a datum and the given keywords. This is done by measuring how frequently a keyword is seen within that datum. </li>
+					<li>Conceptual Search - A LSI(Latent Semantic Indexing) search differs from keyword search in that it looks for implied associations in a dataset using the given keyword(s). </li>
+				</ul>
+
+
+
+
+
+				<h3>Search Interface (Filters):</h3>
+
+
+				<p style="text-indent: 3em;">As well as several searching methods there are several "filters" that can be applied. Filters basically allow you to specify what datasets you would like to limit your search to. Our current datasets include a list of Grants automatically pulled from the NIH, Biology classes at the University of Memphis, and a set of 57 Investigators and Faculty at University of Memphis. </p>
+				<p style="text-indent: 3em;">When clicking the filter button, you can elect to search all datasets by selecting "Everything." You can also select to search just for Grants, Researchers, or Classes that are relevant to your query. </p>
+				<p style="text-indent: 3em;">While selecting a single dataset or all datasets would be preferable in most cases, sometimes it will be desired to search a "mix-and-match" of different datasets. </p>
+				<p style="text-indent: 3em;">By clicking "Build Custom Filter" you can select any and all datasets you wish to search within. </p>
+				<br>
+
+				<p style="text-indent: 3em;">Simply check the checkboxes next to the datasets you wish to include in your results and click "Close." The filter will then be applied and you can begin searching with it. </p>
+			</div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+		<!-- Modal that provides help information for the current page -->
+		<div id="helpModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="helpModalLabel" aria-hidden="true">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h3 id="helpModalLabel">Help</h3>
+			</div>
+
+			<div class="modal-footer">
+				<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+			</div>
+		</div>
+</body>
+</html>

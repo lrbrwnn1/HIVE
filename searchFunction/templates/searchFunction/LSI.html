@@ -1,0 +1,78 @@
+{% extends "./index.html" %}
+<!--Grant Results are inserted into the page here-->
+{% block terms %}
+<h2>Results:</h2>
+
+
+<h3>Researchers:</h3>
+
+    <p>{% for Author in Authors %}
+    	<div class="bs-example">
+    <div class="panel-group" id="accordion">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4 class="panel-title">
+                    <a data-toggle="collapse" data-parent="#accordion_{{ forloop.counter }}" href="#collapseOne_{{ forloop.counter }}">{{Author.item}}</a>
+                </h4>
+            </div>
+            <div id="collapseOne_{{ forloop.counter }}" class="panel-collapse collapse">
+                <div class="panel-body">
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>  
+    {% endfor %}</p>
+
+<h3>Grants:</h3>
+
+    <p>{% for Grant in Grants %}
+    	<div class="bs-example">
+    <div class="panel-group" id="accordion">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4 class="panel-title">
+                    <a data-toggle="collapse" data-parent="#accordion_{{ forloop.counter }}" href="#collapseTwo_{{ forloop.counter }}">{{Grant.item}}</a>
+                </h4>
+            </div>
+            <div id="collapseTwo_{{ forloop.counter }}" class="panel-collapse collapse">
+                <div class="panel-body">
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>  
+{% endfor %}</p>
+
+<h3>Available Researcher Information:</h3>
+{% for profile in profiles %}
+<div class="bs-example">
+    <div class="panel-group" id="accordion">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4 class="panel-title">
+                    <a data-toggle="collapse" data-parent="#accordion_{{ forloop.counter }}" href="#collapseThree_{{ forloop.counter }}"> {{profile.name}}</a>
+                </h4>
+            </div>
+            <div id="collapsetThree_{{ forloop.counter }}" class="panel-collapse">
+                <div class="panel-body">
+                    <p>Location : {{profile.city}}, {{profile.state}}, {{profile.country}}</a></p>
+                    <p>Office : {{profile.office}}</a></p>
+                    <p>Institution : {{profile.institution}}</a></p>
+                    <p>Phone : {{profile.phone}}</a></p>
+                    <p>Department : {{profile.department}}</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>  
+{% endfor %}
+{% endblock %}

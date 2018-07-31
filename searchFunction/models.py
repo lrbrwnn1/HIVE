@@ -1,41 +1,100 @@
 from django.db import models
 from django.contrib.auth.models import User
 
-
 class Investigator(models.Model):
-    investigator_id = models.IntegerField(default=0)
-    department = models.TextField(default='')
-    email = models.EmailField(default='')
-    name = models.TextField(default='')
-    phone = models.CharField(max_length=25,default='')
-    picture = models.ImageField(blank=True, null=True)
-    city = models.TextField(default='')
-    state = models.TextField(default='')
-    country = models.TextField(default='')
-    institution = models.TextField(default='')
-    office = models.CharField(max_length=50,default='')
-    def __str__(self):
-        return self.lname
+	name = models.TextField(default='')
+	investigator_id = models.IntegerField(default=0)
+	department = models.TextField(default='')
+	investigator_tag = models.TextField(default='')
+	email = models.EmailField(default='')
+	city = models.TextField(default='')
+	state = models.TextField(default='')
+	country = models.TextField(default='')
+	office = models.CharField(max_length=50,default='')
+	institution = models.TextField(default='')
+	phone = models.CharField(max_length=25,default='')
+	picture = models.ImageField(blank=True, null=True)
+
+def __str__(self):
+	return self.lname
 
 class Grant(models.Model):
-    docNum = models.CharField(max_length=30,default='')
-    title = models.TextField(default='')
-    agency = models.CharField(max_length=30, default='')
-    guidelink = models.URLField(default='')
-    openDate = models.DateField(blank=True, null=True)
-    expiryDate = models.DateField(blank=True, null=True)
-    parentFOA = models.CharField(max_length=10, default='')
+	docNum = models.CharField(max_length=30,default='')
+	guidelink = models.URLField(default='')
+	title = models.TextField(default='')
+	agency = models.CharField(max_length=30, default='')
+	expiryDate = models.DateField(blank=True, null=True)
+	openDate = models.DateField(blank=True, null=True)
+	parentFOA = models.CharField(max_length=10, default='')
 
-
-    def __str__(self):
-        return self.title
+def __str__(self):
+	return self.title
 
 class Publication(models.Model):
-    title = models.TextField(default='')
-    medline = models.TextField(default='')
-    guidelink = models.URLField(default='')
+	title = models.TextField(default='')
+	abstract = models.TextField(default='')
+	medline = models.TextField(default='')
+	guidelink = models.URLField(default='')
+	authors = models.TextField(default='')
+	investigator_id = models.IntegerField(default=0)
 
-    def __str__(self):
-        return self.title
+def __str__(self):
+	return self.title
+
+class terms_list(models.Model):
+	term = models.TextField(default='')
+
+def __str__(self):
+	return self.term
+
+class term_vectors(models.Model):
+	termVector = models.TextField(default='')
+	
+def __str__(self):
+	return self.termVector
+
+class author2citation(models.Model):
+	author = models.TextField(default='')
+	citation_id = models.IntegerField(default=0)
+
+def __str__(self):
+	return self.title
+
+class author_abstracts(models.Model):
+	author = models.TextField(default='')
+	citation_id = models.IntegerField(default=0)
+	abstract = models.TextField(default='')
+
+def __str__(self):
+	return self.title
+
+class author_grant_vectors(models.Model):
+	item = models.TextField(default='')
+	grantvector = models.TextField(default='')
+
+def __str__(self):
+	return self.title
+
+class authors_grants_pairwise_cosine_similarity_matrix(models.Model):
+	y_axis = models.TextField(default='')
+	x_axis = models.TextField(default='')
+	cosine_score = models.DecimalField(max_digits=10, decimal_places=10)
+
+def __str__(self):
+	return self.title
+
+class authors_grant_documents(models.Model):
+	author = models.TextField(default='')
+	grant = models.TextField(default='')
 
 
+def __str__(self):
+	return self.title
+
+class authors_grants_list(models.Model):
+	item = models.TextField(default='')
+
+
+
+def __str__(self):
+	return self.title

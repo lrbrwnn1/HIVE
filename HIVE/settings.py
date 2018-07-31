@@ -25,7 +25,7 @@ SECRET_KEY = 'u8@)a==kgo1=6*wzam!9*yh@tsac5*af%vazr_m-7-1s398xqa'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = [u'141.225.144.223']
+ALLOWED_HOSTS = ['*', '172.31.9.150', 'http://ec2-18-191-144-221.us-east-2.compute.amazonaws.com']
 
 
 # Application definition
@@ -80,7 +80,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'hive',
         'USER': 'root',
-        'PASSWORD': 'SleeperService24',
+        'PASSWORD': 'binf2electricboogaloo',
         'HOST': 'localhost',
         'PORT': '',
     }

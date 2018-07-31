@@ -1,29 +1,59 @@
 {% extends "./index.html" %}
-
+<!--Grant Results are inserted into the page here-->
 {% block content %}
-<h3>Results:</h3>
+<h3>Grants:</h3>
 {% for grant in grants %}
-		<div class="container">
-		  <div class="panel-group">
-		    <div class="panel panel-default">
-		      <div class="panel-heading">
-		        <h4 class="panel-title">
-		          <a data-toggle="collapse" href="#collapse1"><h5>Title: {{ grant.title }}</h5></a>
-		        </h4>
-		      </div>
-		      <div id="collapse1" class="panel-collapse in">
-		        <div class="panel-body">
+<div class="bs-example">
+    <div class="panel-group" id="accordion">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4 class="panel-title">
+                    <a data-toggle="collapse" data-parent="#accordion_{{ forloop.counter }}" href="#collapseOne_{{ forloop.counter }}">{{grant.title}}</a>
+                </h4>
+            </div>
+            <div id="collapseOne_{{ forloop.counter }}" class="panel-collapse collapse">
+                <div class="panel-body">
 		        	<p>Sponsor: {{grant.agency}}</p>
+		        	<p>Parent FOA: {{grant.parentFOA}}</p>
 		        	<p>Open Date: {{grant.openDate}}</p>
-		        	<p>Parent FOA: {{ grant.parentFOA}}</p>
 	        		<p>Expiration Date: {{grant.expiryDate}}</p>
-	        		<p>Link: <a href>http://{{grant.guidelink}}</a></p>
-		        </div>
-		      </div>
-		    </div>
-		  </div>
-		</div>
-    </br>
+	        		<p>Link: <a href={{grant.guidelink}}>{{grant.guidelink}}</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>  
 {% endfor %}
+{% endblock %}
 
+<!--Researcher Results are inserted into the page here-->
+
+{% block researchers %}
+<h3>Researchers:</h3>
+{% for profile in profiles %}
+<div class="bs-example">
+    <div class="panel-group" id="accordion">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4 class="panel-title">
+                    <a data-toggle="collapse" data-parent="#accordion_{{ forloop.counter }}" href="#collapseTwo_{{ forloop.counter }}"> {{profile.name}}</a>
+                </h4>
+            </div>
+            <div id="collapsetTwo_{{ forloop.counter }}" class="panel-collapse collapse">
+                <div class="panel-body">
+                    <p>Location : {{profile.city}}, {{profile.state}}, {{profile.country}}</a></p>
+                    <p>Office : {{profile.office}}</a></p>
+                    <p>Institution : {{profile.institution}}</a></p>
+                    <p>Phone : {{profile.phone}}</a></p>
+                    <p>Department : {{profile.department}}</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>  
+{% endfor %}
 {% endblock %}

@@ -2,7 +2,7 @@ from django.contrib import admin
 from .models import Investigator, Grant, Publication
 
 class InvestigatorAdmin(admin.ModelAdmin):
-    list_display = ('investigator_id', 'name', 'email', 'phone', 'department')
+    list_display = ('investigator_id', 'name', 'email', 'phone', 'department', 'investigator_tag')
     list_editable = ()
 
 class GrantAdmin(admin.ModelAdmin):

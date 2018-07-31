@@ -69,6 +69,7 @@ form.example::after {
     top:450px;
 }
 
+
 </style>
 <body>
 
@@ -84,30 +85,46 @@ form.example::after {
     </div>
 </div>
 
-
-
-
 <!-- Header Image (HIVE) -->
 <div id="headerImage" class="w3-display-middle w3-image">
         <img src="{% static 'hiveLogo.png' %}" alt="HIVE"/>
 </div>
 <!-- Page content -->
+<!--Search bar-->
+
+<!--NOTE, I CHANGED THE "ACTION" FROM /RESULTS/ TO /LSI/ JUST TO GET A WORKING DEMO. CHANGE THIS BACK AND PROBABLY REDO THE SEARCH BAR ENTIRELY!!!-->
 <div id="searchbar" class="w3-display-middle w3-container" style="height:180px; ">
-    <form class ="example" type="get" action="/results/" style="margin:auto;max-width:300px">
+    <form class ="example" type="get" action="/LSI/" style="margin:auto;max-width:300px">
     <input  id="search_box" type="text" name="search_box"  placeholder="Search..." >
-    <button type="submit"><i class="fa fa-search"></i></button>
+    <div class="container">
+      <button type="submit" class="btn btn-primary btn-block">Conceptual Search</button>
+
+<!--     <div class="content">
+      <button type="button" class="btn btn-primary btn-block">Conceptual Search</button>
+    </div> -->
+
+</div>
 </form>
 </div>
 
-    <div id="results" class="w3-container">
-
-             <div class="col-md-8">
-                
+    <div id="results" class="container">
+    	<div class="row align-items-start">
+    	<div class="col-4">
                 {% block content %}
                 {% endblock %}
+        </div>
+        <div class="col-4">
+                {% block researchers %}
+                {% endblock %}
+        </div>
 
-            </div>
+        <!--FOR TESTING-->
+        <div class="col-4">
+                {% block terms %}
+                {% endblock %}
+        </div>
 
+    </div>
     </div>
 		<!-- Begin Modals -->
 

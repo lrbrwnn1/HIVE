@@ -8,7 +8,7 @@ This section is intended primarily for any future devs working on the project, t
 
 	1. Virtualenv
 		HIVE was developed in python 3.6, and all python packages are encapsulated in a virtual environment. I did this to reduce technical debt and make it easier to maintain the project in the future. If you need to add new libraries to the program, I'd HIGHLY recommend installing them in the virtual environment so that you won't have to worry about updating a package and breaking compatability with another program running on the server.
-		To access the various python libraries the program uses, you will first need to activate the venv (cd into the main HIVE folder and enter "source venv/bin/activate". you'll know the venv is activated if you see "(venv)" appear in front of your promtps on the command line. 
+		To access the various python libraries the program uses, you will first need to activate the venv (cd into the main HIVE folder and enter "source venv/bin/activate". you'll know the venv is activated if you see "(venv)" appear in front of your prompts on the command line. 
 	
 	2. Database
 		The database is currently a work in progress, hopefully I'll have time to come back and update this section later as the backend evolves.

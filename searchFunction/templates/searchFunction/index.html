@@ -90,22 +90,60 @@ form.example::after {
         <img src="{% static 'hiveLogo.png' %}" alt="HIVE"/>
 </div>
 <!-- Page content -->
-<!--Search bar-->
 
-<!--NOTE, I CHANGED THE "ACTION" FROM /RESULTS/ TO /LSI/ JUST TO GET A WORKING DEMO. CHANGE THIS BACK AND PROBABLY REDO THE SEARCH BAR ENTIRELY!!!-->
+<!-- Old search bar-->
+
 <div id="searchbar" class="w3-display-middle w3-container" style="height:180px; ">
     <form class ="example" type="get" action="/LSI/" style="margin:auto;max-width:300px">
     <input  id="search_box" type="text" name="search_box"  placeholder="Search..." >
     <div class="container">
       <button type="submit" class="btn btn-primary btn-block">Conceptual Search</button>
 
-<!--     <div class="content">
-      <button type="button" class="btn btn-primary btn-block">Conceptual Search</button>
-    </div> -->
-
 </div>
 </form>
 </div>
+<!-- New search bar
+Need to center it and find a way to ensure that the dropdown menu correctly redirects the search to results.html for keyword searches and LSI.html for conceptual searches(see "action" on line 97 for example of how to redirect to LSI.html)
+-->
+
+<div id="searchbar" class="span10 center text-center well vspace-small alpha">
+						<form class="form-inline" action="/LSI/" type="get" >
+							<div class="span11">
+								<div class="input-prepend input-append text-left">
+									<div class="btn-group">
+								    	<button id="searchTypeButton" type="button" class="btn dropdown-toggle" data-toggle="dropdown">
+								      		Keyword Search
+								      		<span class="caret"></span>
+								    	</button>
+								    	<ul class="dropdown-menu">
+											<li><a tabindex="-1" href="#" onclick="selectSearch(1);" data-toggle="tooltip" data-placement="right" title="Keyword search provides more 'concrete' results than Conceptual">Keyword Search(Default)</a></li>
+								      		<li><a tabindex="-1" href="#" onclick="selectSearch(0);" data-toggle="tooltip" data-placement="right" title="Conceptual is a more abstract search that provides results which are conceptually similar">Conceptual Search</a></li>
+								      		
+								      		
+								    	</ul>
+								    </div>
+								    
+									<input id="search_box" name="search_box" type="text" class="input-xlarge" placeholder="Enter your Query..">
+									
+									<div class="btn-group">
+								    	<button id="filterButton" type="button" class="btn dropdown-toggle" data-toggle="dropdown">
+								      		Filter
+								      		<span class="caret"></span>
+								    	</button>
+								    	<ul class="dropdown-menu">
+								    		<li><a tabindex="-1" href="#" onclick="selectFilter(0);">Everything(Default)</a></li>
+								      		<li><a tabindex="-1" href="#" onclick="selectFilter(1);">Grants Only</a></li>
+								      		<li><a tabindex="-1" href="#" onclick="selectFilter(2);">Researchers Only</a></li>
+								    	</ul>
+								    </div>
+									<input id="filterType" type="hidden" name="searchType" value="0"> 
+	                    			<input id="isFlashEnabled" name="isFlashEnabled" type="hidden" value="">
+									<button type="submit" class="btn btn-primary">Search!</button> 
+								</div>
+							    
+							</div>
+						</form>
+					</div>
 
     <div id="results" class="container">
     	<div class="row align-items-start">

@@ -2,10 +2,11 @@ from django.db import models
 from django.contrib.auth.models import User
 
 class Investigator(models.Model):
-	name = models.TextField(default='')
-	investigator_id = models.IntegerField(default=0)
+	Fname = models.TextField(default='')
+	MI = models.TextField(default='')
+	Lname = models.TextField(default='')
 	department = models.TextField(default='')
-	investigator_tag = models.TextField(default='')
+	position = models.TextField(default='')
 	email = models.EmailField(default='')
 	city = models.TextField(default='')
 	state = models.TextField(default='')
@@ -13,6 +14,7 @@ class Investigator(models.Model):
 	office = models.CharField(max_length=50,default='')
 	institution = models.TextField(default='')
 	phone = models.CharField(max_length=25,default='')
+	investigator_tag = models.TextField(default='')
 	picture = models.ImageField(blank=True, null=True)
 
 def __str__(self):
@@ -49,52 +51,39 @@ def __str__(self):
 
 class term_vectors(models.Model):
 	termVector = models.TextField(default='')
-	
-def __str__(self):
-	return self.termVector
+
 
 class author2citation(models.Model):
 	author = models.TextField(default='')
 	citation_id = models.IntegerField(default=0)
 
-def __str__(self):
-	return self.title
 
 class author_abstracts(models.Model):
 	author = models.TextField(default='')
 	citation_id = models.IntegerField(default=0)
 	abstract = models.TextField(default='')
 
-def __str__(self):
-	return self.title
 
 class author_grant_vectors(models.Model):
 	item = models.TextField(default='')
 	grantvector = models.TextField(default='')
 
-def __str__(self):
-	return self.title
 
 class authors_grants_pairwise_cosine_similarity_matrix(models.Model):
 	y_axis = models.TextField(default='')
 	x_axis = models.TextField(default='')
 	cosine_score = models.DecimalField(max_digits=10, decimal_places=10)
 
-def __str__(self):
-	return self.title
+
 
 class authors_grant_documents(models.Model):
 	author = models.TextField(default='')
 	grant = models.TextField(default='')
 
 
-def __str__(self):
-	return self.title
-
 class authors_grants_list(models.Model):
 	item = models.TextField(default='')
 
-
-
-def __str__(self):
-	return self.title
+class grants_links(models.Model):
+	grantID = models.TextField(default='')
+	grantLink = models.URLField(default='')

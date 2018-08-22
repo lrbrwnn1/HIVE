@@ -62,7 +62,8 @@ form.example::after {
 }
 #searchbar{
     position: absolute;
-    top: 500px;
+    top: 40%;
+    left: 37%;
 }
 #results{
     position: relative;
@@ -93,7 +94,7 @@ form.example::after {
 
 <!-- Old search bar-->
 
-<div id="searchbar" class="w3-display-middle w3-container" style="height:180px; ">
+<!-- <div id="searchbar" class="w3-display-middle w3-container" style="height:180px; ">
     <form class ="example" type="get" action="/LSI/" style="margin:auto;max-width:300px">
     <input  id="search_box" type="text" name="search_box"  placeholder="Search..." >
     <div class="container">
@@ -101,9 +102,11 @@ form.example::after {
 
 </div>
 </form>
-</div>
+</div> -->
 <!-- New search bar
-Need to center it and find a way to ensure that the dropdown menu correctly redirects the search to results.html for keyword searches and LSI.html for conceptual searches(see "action" on line 97 for example of how to redirect to LSI.html)
+	Currently this search bar just performs a default LSI search.
+	
+	Need to center it and find a way to ensure that the dropdown menu correctly redirects the search to results.html for keyword searches and LSI.html for conceptual searches(see "action" on line 97 for example of how to redirect to LSI.html).
 -->
 
 <div id="searchbar" class="span10 center text-center well vspace-small alpha">
@@ -118,7 +121,7 @@ Need to center it and find a way to ensure that the dropdown menu correctly redi
 								    	<ul class="dropdown-menu">
 											<li><a tabindex="-1" href="#" onclick="selectSearch(1);" data-toggle="tooltip" data-placement="right" title="Keyword search provides more 'concrete' results than Conceptual">Keyword Search(Default)</a></li>
 								      		<li><a tabindex="-1" href="#" onclick="selectSearch(0);" data-toggle="tooltip" data-placement="right" title="Conceptual is a more abstract search that provides results which are conceptually similar">Conceptual Search</a></li>
-								      		
+								      		<!--It looks like we need to change the "onclick" functionality of these two buttons to somehow redirect them to their respective html pages after search has been entered -->
 								      		
 								    	</ul>
 								    </div>

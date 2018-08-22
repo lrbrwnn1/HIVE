@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Researcher Profiles</title>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<style type="text/css">
+    .bs-example{
+      margin: 20px;
+    }
+</style>
+</head>
+<body>
+<h3>Researchers in the HIVE Network:</h3>
+{% block profile %}
+<!-- {% for profile in profiles %} -->
+<div class="span12 alpha">
+  				<div class="span8 center vspace-small">
+  					<div class="span10 center">
+  						<div class="span12">
+  							
+  						</div>
+  						<div class="span12 well">
+  							<ul class="nav nav-tabs">
+								<li class="active">
+									<a href="#Profile" data-toggle="tab">Profile</a>
+								</li>
+								<li>
+									<a href="#Publications" data-toggle="tab">Publications</a>
+								</li>
+								<li>
+									<!-- href="#ResearchNetwork" data-toggle="tab">Research Network</a -->
+								</li>
+								<li>
+									<a href="#TopCoAuthors" data-toggle="tab">Top Co-Authors</a>
+								</li>
+								<li>
+									<a href="#TopJournals" data-toggle="tab">Top Journals</a>
+								</li>
+								<li>
+									<a href="#GrantNetwork" data-toggle="tab">Grant Suggestions</a>
+								</li>
+								<li>
+									<a href="#Histogram" data-toggle="tab">Histogram</a>
+								</li>
+							</ul>
+							<div id="explorerTabContent" class="tab-content">
+								
+								<div class="tab-pane fade active in" id="Profile">
+								
+									Profile Content
+									<h4 class="panel-title">
+										<a data-toggle="collapse" data-parent="#accordion_{{ forloop.counter }}" href="#collapseOne_{{ forloop.counter }}">{{profile.Fname}} {{profile.Lname}} </a>
+									</h4>
+									<div class="panel-body">
+									<p>Location : {{profile.city}}, {{profile.state}}, {{profile.country}}</a></p>
+									<p>Office : {{profile.office}}</a></p>
+									<p>Institution : {{profile.institution}}</a></p>
+									<p>Phone : {{profile.phone}}</a></p>
+									<p>Department : {{profile.department}}</a></p>
+									</div>
+								</div>
+								<div class="tab-pane fade" id="Publications">
+								
+									Publications
+									
+								</div>
+								<div class="tab-pane fade" id="TopCoAuthors">
+								
+									CoAuthors
+									
+								</div>
+								<div class="tab-pane fade" id="TopJournals">
+								
+									Journals
+									
+								</div>
+								<div class="tab-pane fade" id="GrantNetwork">
+								
+									Grant Network
+									
+								</div>
+								<div class="tab-pane fade" id="Histogram">
+								
+									Histogram
+									
+								</div>
+								
+							</div>
+							</div>
+							</div>
+							</div>
+							</div>
+
+</body>
+</html>                                                               
+
+<!--  {% endfor %} -->
+{% endblock %}
+

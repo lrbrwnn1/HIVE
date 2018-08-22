@@ -1,6 +1,10 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+#This file defines the database structure for the project (the db name is "hive" if you're looking for it in mysql)
+#Don't touch anything here unless you know what you're doing and have a specific reason for changing it.
+#As always, make sure to backup the db before making any big changes. 
+
 class Investigator(models.Model):
 	Fname = models.TextField(default='')
 	MI = models.TextField(default='')
@@ -75,15 +79,12 @@ class authors_grants_pairwise_cosine_similarity_matrix(models.Model):
 	cosine_score = models.DecimalField(max_digits=10, decimal_places=10)
 
 
-
-class authors_grant_documents(models.Model):
-	author = models.TextField(default='')
-	grant = models.TextField(default='')
-
+class grant_documents(models.Model):
+	grantTitle= models.TextField(default='')
+	grantID = models.TextField(default='')
+	grantText = models.TextField(default='')
+	grantLink = models.URLField(default='')
 
 class authors_grants_list(models.Model):
 	item = models.TextField(default='')
 
-class grants_links(models.Model):
-	grantID = models.TextField(default='')
-	grantLink = models.URLField(default='')

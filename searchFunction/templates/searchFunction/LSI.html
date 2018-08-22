@@ -4,7 +4,7 @@
 <h2>Results:</h2>
 
 
-<h3>Researchers:</h3>
+<h3>Researchers:</h3><!--Temporary, for testing only-->
 
     <p>{% for Author in Authors %}
     	<div class="bs-example">
@@ -27,7 +27,7 @@
 </html>  
     {% endfor %}</p>
 
-<h3>Grants:</h3>
+<h3>Available Grant Information:</h3>
 
     <p>{% for Grant in Grants %}
     	<div class="bs-example">
@@ -35,7 +35,7 @@
         <div class="panel panel-default">
             <div class="panel-heading">
                 <h4 class="panel-title">
-                    <a data-toggle="collapse" data-parent="#accordion_{{ forloop.counter }}" href="#collapseTwo_{{ forloop.counter }}">{{Grant.item}} <br> {% for key,value in agvResults.items %}  {%if key == Grant.id %} Cosine Score: {{value}} {% endif %}{% endfor %}</a>
+                    <a data-toggle="collapse" data-parent="#accordion_{{ forloop.counter }}" href="#collapseTwo_{{ forloop.counter }}">>{{Grant.grantTitle}} <br> {% for key,value in agvResults.items %}  {%if key == Grant.id %} Cosine Score: {{value}} {% endif %}{% endfor %}</a>
                 </h4>
             </div>
             <div id="collapseTwo_{{ forloop.counter }}" class="panel-collapse collapse">
@@ -62,6 +62,7 @@
             </div>
             <div id="collapsetThree_{{ forloop.counter }}" class="panel-collapse">
                 <div class="panel-body">
+                	<p>{% load static %}<img src ="{% static 'profilePictures/' %}{{profile.investigator_tag}}.jpg" alt="Profile Picture"></p> <!-- Loads the researcher pictures from /HIVE/searchFunction/static/searchFunction/-->
                     <p>Location : {{profile.city}}, {{profile.state}}, {{profile.country}}</a></p>
                     <p>Office : {{profile.office}}</a></p>
                     <p>Institution : {{profile.institution}}</a></p>

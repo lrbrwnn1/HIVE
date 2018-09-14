@@ -43,6 +43,7 @@
             </div>
             <div id="collapsetTwo_{{ forloop.counter }}" class="panel-collapse collapse">
                 <div class="panel-body">
+	<!-- <a href= "{% url 'blog:userprofile' user.userprofile.id %}">Profile</a> -->
                     <p>Location : {{profile.city}}, {{profile.state}}, {{profile.country}}</a></p>
                     <p>Office : {{profile.office}}</a></p>
                     <p>Institution : {{profile.institution}}</a></p>
@@ -53,6 +54,7 @@
         </div>
     </div>
 </div>
+
 </body>
 </html>  
 {% endfor %}

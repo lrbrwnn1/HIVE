@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Investigator, Grant, Publication
+from .models import Investigator, Grant, Publication, grant_documents
 
 class InvestigatorAdmin(admin.ModelAdmin):
     list_display = ('id', 'email','Fname', 'Lname','MI', 'picture', 'investigator_tag')
@@ -11,8 +11,13 @@ class GrantAdmin(admin.ModelAdmin):
 
 class PublicationAdmin(admin.ModelAdmin):
     list_displayPublication = ('publication_id', 'title', 'medline', 'guidelink')
-    list_editablePublication = ()   
+    list_editablePublication = ()  
+
+class GrantDocumentAdmin(admin.ModelAdmin):
+    list_displayGrantdocuments = ('grantTitle', 'grantID', 'grantText', 'grantLink')
+    list_editableGrant = () 
 
 admin.site.register(Investigator, InvestigatorAdmin)
 admin.site.register(Grant, GrantAdmin)
 admin.site.register(Publication, PublicationAdmin)
+admin.site.register(grant_documents, GrantDocumentAdmin)

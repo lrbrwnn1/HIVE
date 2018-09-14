@@ -12,7 +12,7 @@ font-awesome.min.css">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
 <style>
-/*Search Bar Style*/
+
 body {
     font-family: Arial;
 }
@@ -60,14 +60,18 @@ form.example::after {
     position: absolute;
     top: 210px;
 }
+
 #searchbar{
-    position: absolute;
-    top: 40%;
-    left: 37%;
+    position: absolute; 
+    top: 42%;
+    
+
 }
+
 #results{
     position: relative;
     top:450px;
+	left
 }
 
 
@@ -103,24 +107,25 @@ form.example::after {
 </div>
 </form>
 </div> -->
+
 <!-- New search bar
 	Currently this search bar just performs a default LSI search.
 	
 	Need to center it and find a way to ensure that the dropdown menu correctly redirects the search to results.html for keyword searches and LSI.html for conceptual searches(see "action" on line 97 for example of how to redirect to LSI.html).
 -->
 
-<div id="searchbar" class="span10 center text-center well vspace-small alpha">
+<div id="searchbar" class="w3-display-middle  alpha">
 						<form class="form-inline" action="/LSI/" type="get" >
-							<div class="span11">
+							<div class="">
 								<div class="input-prepend input-append text-left">
 									<div class="btn-group">
 								    	<button id="searchTypeButton" type="button" class="btn dropdown-toggle" data-toggle="dropdown">
-								      		Keyword Search
+								      		Search Method
 								      		<span class="caret"></span>
 								    	</button>
-								    	<ul class="dropdown-menu">
-											<li><a tabindex="-1" href="#" onclick="selectSearch(1);" data-toggle="tooltip" data-placement="right" title="Keyword search provides more 'concrete' results than Conceptual">Keyword Search(Default)</a></li>
-								      		<li><a tabindex="-1" href="#" onclick="selectSearch(0);" data-toggle="tooltip" data-placement="right" title="Conceptual is a more abstract search that provides results which are conceptually similar">Conceptual Search</a></li>
+								    	<ul class="dropdown-menu" id="searchType" name="searchType" type="int" value="0">
+											<li><a value="0" tabindex="-1" href="#Keyword" onclick="selectSearch(0);" data-toggle="tooltip" data-placement="right" title="Keyword search provides more 'concrete' results than Conceptual">Keyword Search(Default)</a></li>
+								      		<li><a value="1" tabindex="-1" href="#Conceptual" onclick="selectSearch(1);" data-toggle="tooltip" data-placement="right" title="Conceptual is a more abstract search that provides results which are conceptually similar">Conceptual Search</a></li>
 								      		<!--It looks like we need to change the "onclick" functionality of these two buttons to somehow redirect them to their respective html pages after search has been entered -->
 								      		
 								    	</ul>
@@ -139,7 +144,7 @@ form.example::after {
 								      		<li><a tabindex="-1" href="#" onclick="selectFilter(2);">Researchers Only</a></li>
 								    	</ul>
 								    </div>
-									<input id="filterType" type="hidden" name="searchType" value="0"> 
+									
 	                    			<input id="isFlashEnabled" name="isFlashEnabled" type="hidden" value="">
 									<button type="submit" class="btn btn-primary">Search!</button> 
 								</div>

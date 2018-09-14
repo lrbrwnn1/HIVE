@@ -15,9 +15,7 @@
 </style>
 </head>
 <body>
-<h3>Researchers in the HIVE Network:</h3>
-{% block profile %}
-<!-- {% for profile in profiles %} -->
+
 <div class="span12 alpha">
   				<div class="span8 center vspace-small">
   					<div class="span10 center">
@@ -35,60 +33,70 @@
 								<li>
 									<!-- href="#ResearchNetwork" data-toggle="tab">Research Network</a -->
 								</li>
-								<li>
+<!-- 								<li>
 									<a href="#TopCoAuthors" data-toggle="tab">Top Co-Authors</a>
-								</li>
+								</li> -->
 								<li>
-									<a href="#TopJournals" data-toggle="tab">Top Journals</a>
+									<a href="#TopJournals" data-toggle="tab">Researcher Suggestions</a>
 								</li>
 								<li>
 									<a href="#GrantNetwork" data-toggle="tab">Grant Suggestions</a>
 								</li>
-								<li>
+<!-- 								<li>
 									<a href="#Histogram" data-toggle="tab">Histogram</a>
-								</li>
+								</li> -->
 							</ul>
 							<div id="explorerTabContent" class="tab-content">
 								
 								<div class="tab-pane fade active in" id="Profile">
-								
-									Profile Content
-									<h4 class="panel-title">
-										<a data-toggle="collapse" data-parent="#accordion_{{ forloop.counter }}" href="#collapseOne_{{ forloop.counter }}">{{profile.Fname}} {{profile.Lname}} </a>
-									</h4>
-									<div class="panel-body">
-									<p>Location : {{profile.city}}, {{profile.state}}, {{profile.country}}</a></p>
-									<p>Office : {{profile.office}}</a></p>
-									<p>Institution : {{profile.institution}}</a></p>
-									<p>Phone : {{profile.phone}}</a></p>
-									<p>Department : {{profile.department}}</a></p>
-									</div>
+
+									{% for profile in profiles %}
+									<p>{% load static %}<img style="height: 150px; width 150px;" src ="{% static 'profilePictures/' %}{{profile.investigator_tag}}.jpg" alt="No picture available"></p> <!-- Loads the researcher pictures from /HIVE/searchFunction/static/profilePictures/-->
+									<p><h3><b>{{profile.Fname}} {{profile.Lname}}</b></h3></a></p>
+									<p><b>Location :</b> {{profile.city}}, {{profile.state}}, {{profile.country}}</a></p>
+									<p><b>Office :</b> {{profile.office}}</a></p>
+									<p><b>Institution :</b> {{profile.institution}}</a></p>
+									<p><b>Phone :</b> {{profile.phone}}</a></p>
+									<p><b>Department :</b> {{profile.department}}</a></p>
 								</div>
+								{% endfor %}
+
 								<div class="tab-pane fade" id="Publications">
 								
 									Publications
 									
 								</div>
-								<div class="tab-pane fade" id="TopCoAuthors">
+<!-- 								<div class="tab-pane fade" id="TopCoAuthors">
 								
 									CoAuthors
 									
-								</div>
+								</div> -->
 								<div class="tab-pane fade" id="TopJournals">
+									{% for authors in authorInfo %}
+									<p>{{authors.Fname}} {{ authors.Lname}}</p>
+									{% endfor %}
 								
-									Journals
+									{% for authorcos in simAuthors %}
+									<p>{{authorcos.y_axis}} <b>Similarity Score :</b>  {{authorcos.cosine_score}}</p>
+									{% endfor %}
 									
 								</div>
 								<div class="tab-pane fade" id="GrantNetwork">
-								
-									Grant Network
-									
+									{% for g in grantInfo %}
+									{{g.grantTitle}}
+									{% endfor %}
+
+									{% for grants in simGrants %}
+									<p>{{grants.y_axis}} <b>Similarity Score :</b>  {{grants.cosine_score}}</p>
+									{% endfor %}
 								</div>
-								<div class="tab-pane fade" id="Histogram">
+
+
+<!-- 								<div class="tab-pane fade" id="Histogram">
 								
 									Histogram
 									
-								</div>
+								</div> -->
 								
 							</div>
 							</div>
@@ -96,9 +104,10 @@
 							</div>
 							</div>
 
-</body>
+
+
+			dog	</body>
 </html>                                                               
 
-<!--  {% endfor %} -->
-{% endblock %}
+
 

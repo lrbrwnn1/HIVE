@@ -2,24 +2,24 @@
 # HIVE
 > A research collaboration engine
 
-Hive is a django-based webtool designed to help researchers collaborate and find suitable grants for their research. The search tool has two modes: basic keywork search and LSI-powered conceptual search. 
+Hive is a django-based webtool designed to help researchers collaborate and find suitable grants for their research. The search tool has two modes: basic keywork search and LSA-powered conceptual search. 
 
 
 
 ## Usage examples
 Users can search for a term relevant to their research interests. 
 
-The keyword search will return "concrete" results based on simple keyword lookup with respect to grant opportunities and researcher publications. Searching for "reelin", for example, will return researchers whose publications frequently contain the word reelin, and grants containing the word reelin. 
+The keyword search will return concrete results based on simple keyword lookup with respect to grant opportunities and researcher publications. Searching for reelin, for example, will return researchers whose publications frequently contain the word reelin, and grants containing the word reelin. 
 
 The conceptual search uses latent semantic analysis to find conceptual similarities between publications and potential grants.
-A search for reelin in this mode might return researcher involved in researching synaptic plasticity, even if their research does not explicitly mention reelin. 
+A search for reelin in this mode might return researchers and grants related to researching synaptic plasticity, even if their research does not explicitly mention reelin. 
 
 ## Release History
 * 0.1.1
     * Added publication scraper 
     * Basic grant scraper functionality complete
     * In progress:
-    	*Overhaul of LSI results page - grants and researchers will be separated by tabs
+    	*Overhaul of LSA results page - grants and researchers will be separated by tabs
 	*New profile pages UI for scraped publications
 	*Graph visualizations of MESH headings, publication history and more
 	*Further database optimizations
@@ -28,7 +28,7 @@ A search for reelin in this mode might return researcher involved in researching
     * Revised entire database - simplified and combined several tables, added more information to grant and publication tables
     * Added new researcher and grant information on profile pages
     * Added new "publications" tab in profiles
-    * Second pass on LSI db query optimization : roughly 30% increase in speed
+    * Second pass on LSA db query optimization : roughly 30% increase in speed
     * Temporarily removed keyword search until search bar overhaul is completed
 * 0.0.5
     * View-caching 
@@ -39,7 +39,7 @@ A search for reelin in this mode might return researcher involved in researching
     * Major UI overhaul
     * New logo!
 * 0.0.2
-    * LSI search Functionality
+    * LSA search Functionality
 * 0.0.1
     * Initialized Project
     * Basic UI 

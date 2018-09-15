@@ -8,7 +8,9 @@ Hive is a django-based webtool designed to help researchers collaborate and find
 
 ## Usage examples
 Users can search for a term relevant to their research interests. 
+
 The keyword search will return "concrete" results based on simple keyword lookup with respect to grant opportunities and researcher publications. Searching for "reelin", for example, will return researchers whose publications frequently contain the word reelin, and grants containing the word reelin. 
+
 The conceptual search uses latent semantic analysis to find conceptual similarities between publications and potential grants.
 A search for reelin in this mode might return researcher involved in researching synaptic plasticity, even if their research does not explicitly mention reelin. 
 

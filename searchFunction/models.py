@@ -31,12 +31,15 @@ class Grant(models.Model):
 	parentFOA = models.CharField(max_length=10, default='')
 
 class Publication(models.Model):
+	pmid = models.TextField(default='')
 	title = models.TextField(default='')
 	abstract = models.TextField(default='')
-	medline = models.TextField(default='')
-	guidelink = models.URLField(default='')
+	affiliation = models.TextField(default='')
 	authors = models.TextField(default='')
-	investigator_id = models.IntegerField(default=0)
+	investigator_id = models.TextField(default='')
+	source = models.TextField(default='')
+	datePublished = models.TextField(default='')
+	meshHeadings = models.TextField(default='')
 
 class terms_list(models.Model):
 	term = models.TextField(default='')

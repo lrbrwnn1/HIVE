@@ -6,11 +6,42 @@ Hive is a django-based webtool designed to help researchers collaborate and find
 
 
 
-## Usage example
+## Usage examples
+Users can search for a term relevant to their research interests. 
+The keyword search will return "concrete" results based on simple keyword lookup with respect to grant opportunities and researcher publications. Searching for "reelin", for example, will return researchers whose publications frequently contain the word reelin, and grants containing the word reelin. 
+The conceptual search uses latent semantic analysis to find conceptual similarities between publications and potential grants.
+A search for reelin in this mode might return researcher involved in researching synaptic plasticity, even if their research does not explicitly mention reelin. 
 
 ## Release History
+* 0.1.1
+    * Added publication scraper 
+    * Basic grant scraper functionality complete
+    * In progress:
+    	*Overhaul of LSI results page - grants and researchers will be separated by tabs
+	*New profile pages UI for scraped publications
+	*Graph visualizations of MESH headings, publication history and more
+	*Further database optimizations
+* 0.1.0
+    * Code cleanup
+    * Revised entire database - simplified and combined several tables, added more information to grant and publication tables
+    * Added new researcher and grant information on profile pages
+    * Added new "publications" tab in profiles
+    * Second pass on LSI db query optimization : roughly 30% increase in speed
+    * Temporarily removed keyword search until search bar overhaul is completed
+* 0.0.5
+    * View-caching 
+    * Database query optimizations
+* 0.0.4
+    * Implemented basic profile pages
+* 0.0.3
+    * Major UI overhaul
+    * New logo!
+* 0.0.2
+    * LSI search Functionality
 * 0.0.1
-    * Work in progress
+    * Initialized Project
+    * Basic UI 
+    * Keyword Search Functionality
 
 
 

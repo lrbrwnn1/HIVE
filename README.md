@@ -1,9 +1,10 @@
+![](header.png)
 # HIVE
 > A research collaboration engine
 
 Hive is a django-based webtool designed to help researchers collaborate and find suitable grants for their research. The search tool has two modes: basic keywork search and LSI-powered conceptual search. 
 
-![](header.png)
+
 
 ## Usage example
 

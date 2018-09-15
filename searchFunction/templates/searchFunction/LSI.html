@@ -5,30 +5,6 @@
 <h2>Results:</h2>
 <a href="#researcherLoc">Click Here to Jump to Researchers </a>
 <hr>
-<!--Temporary, for testing only-->
-<!-- <h3>Researchers:</h3>
-
-    <p>{% for Author in Authors %}
-    	<div class="bs-example">
-    <div class="panel-group" id="accordion">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h4 class="panel-title">
-                    <a data-toggle="collapse" data-parent="#accordion_{{ forloop.counter }}" href="#collapseOne_{{ forloop.counter }}">{{Author.item}} <br> {% for key,value in agvResults.items %}  {%if key == Author.id %} Cosine Score: {{value}} {% endif %}{% endfor %}</a>
-                </h4>
-            </div>
-            <div id="collapseOne_{{ forloop.counter }}" class="panel-collapse collapse">
-                <div class="panel-body">
-
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-</body>
-</html>  
-    {% endfor %}</p>
- -->
 <h3>Available Grant Information:</h3>
 
     <p>{% for Grant in Grants %}

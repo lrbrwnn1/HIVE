@@ -1,38 +1,38 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Researcher Profiles</title>
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-<style type="text/css">
-    .bs-example{
-      margin: 20px;
-    }
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Researcher Profiles</title>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<style type="text/css">
+	.bs-example{
+		margin: 20px;
+	}
 </style>
 </head>
 <body>
 
-<div class="span12 alpha">
-  				<div class="span8 center vspace-small">
-  					<div class="span10 center">
-  						<div class="span12">
-  							
-  						</div>
-  						<div class="span12 well">
-  							<ul class="nav nav-tabs">
-								<li class="active">
-									<a href="#Profile" data-toggle="tab">Profile</a>
-								</li>
-								<li>
-									<a href="#Publications" data-toggle="tab">Publications</a>
-								</li>
-								<li>
-									<!-- href="#ResearchNetwork" data-toggle="tab">Research Network</a -->
-								</li>
+	<div class="span12 alpha">
+		<div class="span8 center vspace-small">
+			<div class="span10 center">
+				<div class="span12">
+					
+				</div>
+				<div class="span12 well">
+					<ul class="nav nav-tabs">
+						<li class="active">
+							<a href="#Profile" data-toggle="tab">Profile</a>
+						</li>
+						<li>
+							<a href="#Publications" data-toggle="tab">Publications</a>
+						</li>
+						<li>
+							<!-- href="#ResearchNetwork" data-toggle="tab">Research Network</a -->
+						</li>
 <!-- 								<li>
 									<a href="#TopCoAuthors" data-toggle="tab">Top Co-Authors</a>
 								</li> -->
@@ -62,20 +62,16 @@
 								{% endfor %}
 
 								<div class="tab-pane fade" id="Publications">
-								
+									
 									Publications
 									
 								</div>
-<!-- 								<div class="tab-pane fade" id="TopCoAuthors">
-								
-									CoAuthors
-									
-								</div> -->
+
 								<div class="tab-pane fade" id="TopJournals">
 									{% for authors in authorInfo %}
 									<p>{{authors.Fname}} {{ authors.Lname}}</p>
 									{% endfor %}
-								
+									
 									{% for authorcos in simAuthors %}
 									<p>{{authorcos.y_axis}} <b>Similarity Score :</b>  {{authorcos.cosine_score}}</p>
 									{% endfor %}
@@ -91,23 +87,22 @@
 									{% endfor %}
 								</div>
 
-
-<!-- 								<div class="tab-pane fade" id="Histogram">
+								<div class="tab-pane fade" id="Histogram">
 								
 									Histogram
 									
-								</div> -->
+								</div>
 								
 							</div>
-							</div>
-							</div>
-							</div>
-							</div>
+						</div>
+					</div>
+				</div>
+			</div>
 
 
 
-			dog	</body>
-</html>                                                               
+		</body>
+		</html>                                                               
 
 
 

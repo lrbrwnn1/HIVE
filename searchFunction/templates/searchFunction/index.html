@@ -14,99 +14,86 @@ font-awesome.min.css">
 <style>
 
 body {
-    font-family: Arial;
+	font-family: Arial;
 }
 
 * {
-    box-sizing: border-box;
+	box-sizing: border-box;
 }
 
 form.example input[type=text] {
-    padding: 10px;
-    font-size: 17px;
-    border: 1px solid grey;
-    float: left;
-    width: 80%;
-    background: #f1f1f1;
+	padding: 10px;
+	font-size: 17px;
+	border: 1px solid grey;
+	float: left;
+	width: 80%;
+	background: #f1f1f1;
 }
 
 form.example button {
-    float: left;
-    width: 20%;
-    padding: 10px;
-    background: #2196F3;
-    color: white;
-    font-size: 17px;
-    border: 1px solid grey;
-    border-left: none;
-    cursor: pointer;
+	float: left;
+	width: 20%;
+	padding: 10px;
+	background: #2196F3;
+	color: white;
+	font-size: 17px;
+	border: 1px solid grey;
+	border-left: none;
+	cursor: pointer;
 }
 
 form.example button:hover {
-    background: #0b7dda;
+	background: #0b7dda;
 }
 
 form.example::after {
-    content: "";
-    clear: both;
-    display: table;
+	content: "";
+	clear: both;
+	display: table;
 }
 /*Positioning*/
 
 #navbar{
-    position: relative;
+	position: relative;
 }
 #headerImage{
-    position: absolute;
-    top: 210px;
+	position: absolute;
+	top: 210px;
 }
 
 #searchbar{
-    position: absolute; 
-    top: 42%;
-    
+	position: absolute; 
+	top: 42%;
+
 
 }
 
 #results{
-    position: relative;
-    top:450px;
+	position: relative;
+	top:450px;
 	left
 }
-
-
 </style>
+
 <body>
 
-<!-- Navbar (sit on top) -->
-<div id="navbar" class="w3-top">
-    <div class="w3-bar w3-white w3-padding w3-card" style="letter-spacing:4px;">
-        <a href="/" class="w3-bar-item w3-button">HIVE</a>
-<!-- Right-sided navbar links. Hide them on small screens-->        
-        <div class="w3-right w3-hide-small">
-            <a href="#about" class="w3-bar-item w3-button" data-toggle="modal" data-target="#aboutModal">ABOUT</a>
-            <a href="#contact" class="w3-bar-item w3-button" data-toggle="modal" data-target="#helpModal">HELP</a>
-        </div>
-    </div>
-</div>
+	<!-- Navbar (sit on top) -->
+	<div id="navbar" class="w3-top">
+		<div class="w3-bar w3-white w3-padding w3-card" style="letter-spacing:4px;">
+			<a href="/" class="w3-bar-item w3-button">HIVE</a>
+			<!-- Right-sided navbar links. Hide them on small screens-->        
+			<div class="w3-right w3-hide-small">
+				<a href="#about" class="w3-bar-item w3-button" data-toggle="modal" data-target="#aboutModal">ABOUT</a>
+				<a href="#contact" class="w3-bar-item w3-button" data-toggle="modal" data-target="#helpModal">HELP</a>
+			</div>
+		</div>
+	</div>
 
-<!-- Header Image (HIVE) -->
-<div id="headerImage" class="w3-display-middle w3-image">
-        <img src="{% static 'hiveLogo.png' %}" alt="HIVE"/>
-</div>
-<!-- Page content -->
-
-<!-- Old search bar-->
-
-<!-- <div id="searchbar" class="w3-display-middle w3-container" style="height:180px; ">
-    <form class ="example" type="get" action="/LSI/" style="margin:auto;max-width:300px">
-    <input  id="search_box" type="text" name="search_box"  placeholder="Search..." >
-    <div class="container">
-      <button type="submit" class="btn btn-primary btn-block">Conceptual Search</button>
-
-</div>
-</form>
-</div> -->
+	<!-- Header Image (HIVE) -->
+	<div id="headerImage" class="w3-display-middle w3-image">
+		<img src="{% static 'hiveLogo.png' %}" alt="HIVE"/>
+	</div>
+	<!-- Page content -->
 
 <!-- New search bar
 	Currently this search bar just performs a default LSI search.
@@ -115,116 +102,104 @@ form.example::after {
 -->
 
 <div id="searchbar" class="w3-display-middle  alpha">
-						<form class="form-inline" action="/LSI/" type="get" >
-							<div class="">
-								<div class="input-prepend input-append text-left">
-									<div class="btn-group">
-								    	<button id="searchTypeButton" type="button" class="btn dropdown-toggle" data-toggle="dropdown">
-								      		Search Method
-								      		<span class="caret"></span>
-								    	</button>
-								    	<ul class="dropdown-menu" id="searchType" name="searchType" type="int" value="0">
-											<li><a value="0" tabindex="-1" href="#Keyword" onclick="selectSearch(0);" data-toggle="tooltip" data-placement="right" title="Keyword search provides more 'concrete' results than Conceptual">Keyword Search(Default)</a></li>
-								      		<li><a value="1" tabindex="-1" href="#Conceptual" onclick="selectSearch(1);" data-toggle="tooltip" data-placement="right" title="Conceptual is a more abstract search that provides results which are conceptually similar">Conceptual Search</a></li>
-								      		<!--It looks like we need to change the "onclick" functionality of these two buttons to somehow redirect them to their respective html pages after search has been entered -->
-								      		
-								    	</ul>
-								    </div>
-								    
-									<input id="search_box" name="search_box" type="text" class="input-xlarge" placeholder="Enter your Query..">
-									
-									<div class="btn-group">
-								    	<button id="filterButton" type="button" class="btn dropdown-toggle" data-toggle="dropdown">
-								      		Filter
-								      		<span class="caret"></span>
-								    	</button>
-								    	<ul class="dropdown-menu">
-								    		<li><a tabindex="-1" href="#" onclick="selectFilter(0);">Everything(Default)</a></li>
-								      		<li><a tabindex="-1" href="#" onclick="selectFilter(1);">Grants Only</a></li>
-								      		<li><a tabindex="-1" href="#" onclick="selectFilter(2);">Researchers Only</a></li>
-								    	</ul>
-								    </div>
-									
-	                    			<input id="isFlashEnabled" name="isFlashEnabled" type="hidden" value="">
-									<button type="submit" class="btn btn-primary">Search!</button> 
-								</div>
-							    
-							</div>
-						</form>
-					</div>
+	<form class="form-inline" action="/LSI/" type="get" >
+		<div class="">
+			<div class="input-prepend input-append text-left">
+				<div class="btn-group">
+					<button id="searchTypeButton" type="button" class="btn dropdown-toggle" data-toggle="dropdown">
+						Conceptual Search
+						<span class="caret"></span>
+					</button>
+					<ul class="dropdown-menu" id="searchType" name="searchType" type="int" value="0">
+						<li><a value="0" tabindex="-1" href="#Keyword" onclick="selectSearch(0);" data-toggle="tooltip" data-placement="right" title="Keyword search provides more 'concrete' results than Conceptual">Keyword Search(Default)</a></li>
+						<li><a value="1" tabindex="-1" href="#Conceptual" onclick="selectSearch(1);" data-toggle="tooltip" data-placement="right" title="Conceptual is a more abstract search that provides results which are conceptually similar">Conceptual Search</a></li>
+						<!--It looks like we need to change the "onclick" functionality of these two buttons to somehow redirect them to their respective html pages after search has been entered -->
 
-    <div id="results" class="container">
-    	<div class="row align-items-start">
-    	<div class="col-4">
-                {% block content %}
-                {% endblock %}
-        </div>
-        <div class="col-4">
-                {% block researchers %}
-                {% endblock %}
-        </div>
+					</ul>
+				</div>
 
-        <!--FOR TESTING-->
-        <div class="col-4">
-                {% block terms %}
-                {% endblock %}
-        </div>
+				<input id="search_box" name="search_box" type="text" class="input-xlarge" placeholder="Enter your Query..">
 
-    </div>
-    </div>
-		<!-- Begin Modals -->
+				<input id="isFlashEnabled" name="isFlashEnabled" type="hidden" value="">
+				<button type="submit" class="btn btn-primary">Search!</button> 
+			</div>
 
-		<!-- Modal that provides information about HIVE -->
-	  <div class="modal fade" id="aboutModal" role="dialog">
-    <div class="modal-dialog modal-lg">
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h4 class="modal-title">HIVE</h4>
-        </div>
-        <div class="modal-body">
-          			<div class="modal-body">
-				<div class="media">
-                <p class="lead">
-					HIVE provides principal investigators with the tools they need to find suitable collaborators and funding relevant to their
-					research.
-				</p>
-				<p>
-					<em>
-						We accomplish this through clever application of new and traditional information retrieval methods: A basic keyword search
-						and conceptual search via LSI.<br>
-						Typical keyword searches are provided to give you "directly associated" results relative to your queries.
-						However, through conceptual search we provide you with the ability to find previously invisible implied associations.
-					</em>
-				</p>
+		</div>
+	</form>
+</div>
 
-				<h3>Who's Behind This?</h3>
+<div id="results" class="container">
+	<div class="row align-items-start">
+		<div class="col-4">
+			{% block content %}
+			{% endblock %}
+		</div>
+		<div class="col-4">
+			{% block researchers %}
+			{% endblock %}
+		</div>
+
+		<!--FOR TESTING-->
+		<div class="col-4">
+			{% block terms %}
+			{% endblock %}
+		</div>
+
+	</div>
+</div>
+<!-- Begin Modals -->
+
+<!-- Modal that provides information about HIVE -->
+<div class="modal fade" id="aboutModal" role="dialog">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+				<h4 class="modal-title">HIVE</h4>
+			</div>
+			<div class="modal-body">
+				<div class="modal-body">
 					<div class="media">
-						<a class="pull-left" href="#">
-							<img class="media-object" data-src="res/images/um.png">
-						</a>
-						<div class="media-body">
-							<h4 class="media-heading">The Bioinformatics Dept @ The University of Memphis</h4>
+						<p class="lead">
+							HIVE provides principal investigators with the tools they need to find suitable collaborators and funding relevant to their
+							research.
+						</p>
+						<p>
+							<em>
+								We accomplish this through clever application of new and traditional information retrieval methods: A basic keyword search
+								and conceptual search via LSI.<br>
+								Typical keyword searches are provided to give you "directly associated" results relative to your queries.
+								However, through conceptual search we provide you with the ability to find previously invisible implied associations.
+							</em>
+						</p>
+
+						<h3>Who's Behind This?</h3>
+						<div class="media">
+							<a class="pull-left" href="#">
+								<img class="media-object" data-src="res/images/um.png">
+							</a>
+							<div class="media-body">
+								<h4 class="media-heading">The Bioinformatics Dept @ The University of Memphis</h4>
+							</div>
 						</div>
 					</div>
-</div>
+				</div>
 			</div>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        </div>
-      </div>
-    </div>
-  </div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+			</div>
+		</div>
+	</div>
+</div>
 
-  		<!-- Modal that provides help information for the current page -->
-  		  <div class="modal fade" id="helpModal" role="dialog">
-    <div class="modal-dialog modal-lg">
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h4 class="modal-title">HIVE</h4>
-        </div>
+<!-- Modal that provides help information for the current page -->
+<div class="modal fade" id="helpModal" role="dialog">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+				<h4 class="modal-title">HIVE</h4>
+			</div>
 			<div class="modal-body">
 				<b>Help Index</b>
 				<ul>
@@ -239,48 +214,48 @@ form.example::after {
 
 
 				<p style="text-indent: 3em;">The search interface is the first way in which you'll interact with HIVE. It has several components that allow you to specify what datasets you'd like to search and how you'd like to search them. The interface is composed of 2 drop down lists, a text input for entering queries, and a submit button. The first drop down list, labeled as "Keyword" by default, allows you to select your search method. The second drop down list, labeled as "Filter" by default, allows you to specify the datasets you'd like to search within.
-				<br>
-				<br>
-				<h3>Search Interface (Search Methods):</h3>
+					<br>
+					<br>
+					<h3>Search Interface (Search Methods):</h3>
 
-				<p>The search methods available at this time are a keyword search algorithm, and an LSI search algorithm.  What’s the difference between the two?</p>
-				<ul>
-					<li>Keyword Search - A keyword search is what most users will be familiar with. It looks for direct associations between a datum and the given keywords. This is done by measuring how frequently a keyword is seen within that datum. </li>
-					<li>Conceptual Search - A LSI(Latent Semantic Indexing) search differs from keyword search in that it looks for implied associations in a dataset using the given keyword(s). </li>
-				</ul>
-
-
+					<p>The search methods available at this time are a keyword search algorithm, and an LSI search algorithm.  What’s the difference between the two?</p>
+					<ul>
+						<li>Keyword Search - A keyword search is what most users will be familiar with. It looks for direct associations between a datum and the given keywords. This is done by measuring how frequently a keyword is seen within that datum. </li>
+						<li>Conceptual Search - A LSI(Latent Semantic Indexing) search differs from keyword search in that it looks for implied associations in a dataset using the given keyword(s). </li>
+					</ul>
 
 
 
-				<h3>Search Interface (Filters):</h3>
 
 
-				<p style="text-indent: 3em;">As well as several searching methods there are several "filters" that can be applied. Filters basically allow you to specify what datasets you would like to limit your search to. Our current datasets include a list of Grants automatically pulled from the NIH, Biology classes at the University of Memphis, and a set of 57 Investigators and Faculty at University of Memphis. </p>
-				<p style="text-indent: 3em;">When clicking the filter button, you can elect to search all datasets by selecting "Everything." You can also select to search just for Grants, Researchers, or Classes that are relevant to your query. </p>
-				<p style="text-indent: 3em;">While selecting a single dataset or all datasets would be preferable in most cases, sometimes it will be desired to search a "mix-and-match" of different datasets. </p>
-				<p style="text-indent: 3em;">By clicking "Build Custom Filter" you can select any and all datasets you wish to search within. </p>
-				<br>
+					<h3>Search Interface (Filters):</h3>
 
-				<p style="text-indent: 3em;">Simply check the checkboxes next to the datasets you wish to include in your results and click "Close." The filter will then be applied and you can begin searching with it. </p>
-			</div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        </div>
-      </div>
-    </div>
-  </div>
 
-		<!-- Modal that provides help information for the current page -->
-		<div id="helpModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="helpModalLabel" aria-hidden="true">
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-				<h3 id="helpModalLabel">Help</h3>
-			</div>
+					<p style="text-indent: 3em;">As well as several searching methods there are several "filters" that can be applied. Filters basically allow you to specify what datasets you would like to limit your search to. Our current datasets include a list of Grants automatically pulled from the NIH, Biology classes at the University of Memphis, and a set of 57 Investigators and Faculty at University of Memphis. </p>
+					<p style="text-indent: 3em;">When clicking the filter button, you can elect to search all datasets by selecting "Everything." You can also select to search just for Grants, Researchers, or Classes that are relevant to your query. </p>
+					<p style="text-indent: 3em;">While selecting a single dataset or all datasets would be preferable in most cases, sometimes it will be desired to search a "mix-and-match" of different datasets. </p>
+					<p style="text-indent: 3em;">By clicking "Build Custom Filter" you can select any and all datasets you wish to search within. </p>
+					<br>
 
-			<div class="modal-footer">
-				<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+					<p style="text-indent: 3em;">Simply check the checkboxes next to the datasets you wish to include in your results and click "Close." The filter will then be applied and you can begin searching with it. </p>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				</div>
 			</div>
 		</div>
+	</div>
+
+	<!-- Modal that provides help information for the current page -->
+	<div id="helpModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="helpModalLabel" aria-hidden="true">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+			<h3 id="helpModalLabel">Help</h3>
+		</div>
+
+		<div class="modal-footer">
+			<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+		</div>
+	</div>
 </body>
 </html>

@@ -50,7 +50,7 @@ class term_vectors(models.Model):
 
 class author2citation(models.Model):
 	author = models.TextField(default='')
-	citation_id = models.IntegerField(default=0)
+	citation_id = models.TextField(default=0)
 
 
 class author_abstracts(models.Model):

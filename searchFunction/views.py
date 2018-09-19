@@ -1,7 +1,9 @@
 from django.shortcuts import render
 from .models import Investigator
+from .models import Publication
 from .models import Grant
 from .models import terms_list
+from .models import author2citation
 from .models import term_vectors
 from .models import author_grant_vectors
 from .models import grant_documents
@@ -14,7 +16,7 @@ from django.db.models.functions import Cast
 from django.views.decorators.cache import cache_page
 
 
-@cache_page(60 * 10080)
+#@cache_page(60 * 10080)
 def index(request):
 	return render(request, 'searchFunction/index.html',{})
 
@@ -66,17 +68,23 @@ def profile(request):
 		profiles = Investigator.objects.all()
 		return render(request, 'searchFunction/profile.html',{'profiles' : profiles})
 
-def userprofile(request): #This bit is still under construction, currently authorInfo and grantInfo not working as intended.
+def userprofile(request): #This bit is still under construction
+	citationList = []
 	if request.method == 'GET':
 		p=(request.GET.get('investigator_tag'))
 		Grants = grant_documents.objects.all()
+		citations = author2citation.objects.filter(author__icontains="Author_"+p).values()#This doesn't work yet
+		for cList in citations:
+			citationList=(list(map(int, cList['citation_id'].split(","))))
+		publications = Publication.objects.filter(pmid__in=citationList)
 		profiles = Investigator.objects.filter(investigator_tag__exact=p)
 		simAll = authors_grants_pairwise_cosine_similarity_matrix.objects.filter(x_axis__contains=p).filter(cosine_score__gt=.2).exclude(y_axis=p)
-		simGrants = simAll.filter(y_axis__contains='Grant').order_by('-cosine_score')
+		simGrants = simAll.filter(y_axis__contains='Grant').order_by('-cosine_score').distinct()
 		simAuthors = simAll.filter(y_axis__contains='Author').order_by('-cosine_score').distinct()
-		grantInfo = grant_documents.objects.filter(grantID__in=simGrants.values('y_axis')).distinct()
-		authorInfo = Investigator.objects.filter(investigator_tag__in=simAuthors.values('y_axis')).distinct() 
+		# grantInfo = grant_documents.objects.filter(grantID__in=simGrants.values('y_axis')).distinct()
+		# authorInfo = Investigator.objects.filter(investigator_tag__in=simAuthors.values('y_axis')).distinct() 
 
-		return render(request, 'searchFunction/userprofile.html', {'profiles' : profiles, 'simGrants' : simGrants, 'simAuthors' : simAuthors, 'authorInfo' : authorInfo, 'grantInfo' : grantInfo} )
+
+		return render(request, 'searchFunction/userprofile.html', {'profiles' : profiles, 'simGrants' : simGrants, 'simAuthors' : simAuthors, 'publications':publications} )
 
 

@@ -1,5 +1,13 @@
 {% extends "./index.html" %}
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<style type="text/css">
+.bs-example{
+	margin: 20px;
+}
+</style>
 <!--This block is shown after an LSI search is performed-->
 {% block terms %}
 <hr>
@@ -45,20 +53,18 @@
             </div>
             <div id="collapsetThree_{{ forloop.counter }}" class="panel-collapse">
                 <div class="panel-body">
-                	<p>{% load static %}<img style="height: 150px; width 150px;" src ="{% static 'profilePictures/' %}{{profile.investigator_tag}}.jpg" alt="No picture available"></p> <!-- Loads the researcher pictures from /HIVE/searchFunction/static/profilePictures/--> <!-- This is probably where to focus for fixing the image sizing problem--> 
-	<!--
+                	<p>{% load static %}<img style="height: 150px; width 150px;" src ="{% static 'profilePictures/' %}{{profile.investigator_tag}}.jpg" alt="No picture available"></p> 
+
                     <p><b>Location</b> : {{profile.city}}, {{profile.state}}, {{profile.country}}</a></p>
                     <p><b>Office</b> : {{profile.office}}</a></p>
                     <p><b>Institution</b> : {{profile.institution}}</a></p>
                     <p><b>Phone</b> : {{profile.phone}}</a></p>
                     <p><b>Department</b> : {{profile.department}}</a></p>
-                    <!-- This is the link button at the bottom of every researcher result : redirects to the selected profile by passing the investigator tag to userprofiles in views.py-->
-	<!--
                     <form action="/userprofile/" method="get">
-                    {% csrf_token %}
-                    {{ form }}
-                    <input type="hidden" name="investigator_tag" value="{{profile.investigator_tag}}">
-                    <input type="submit" class="btn btn-primary btn-sm" value="Visit Profile" name="btn"/>
+                    	{% csrf_token %}
+                    	{{ form }}
+                    	<input type="hidden" name="investigator_tag" value="{{profile.investigator_tag}}">
+                    	<input type="submit" class="btn btn-primary btn-sm" value="Visit Profile" name="btn"/>
                     </form>
 
                 </div>
@@ -66,86 +72,93 @@
         </div>
     </div>
 </div>
-{% endfor %}
--->
+{% endfor %} -->
+
+<br />
+<br />
+<br />
 <div class="span12 alpha">
-<div class="span8 center vspace-small">
-<div class="span10 center">
-<div class="span12 well">
-<ul class="nav nav-tabs">
-				<li class="active">
-					<a href="#Researchers" data-toggle="tab">Researchers</a>
-				</li>
-				<li>
-					<a href="#Grants" data-toggle="tab">Grants</a>
-				</li>
-								
-</ul>
-<div id="explorerTabContent" class="tab-content">
+	<div class="span8 center vspace-small">
+		<div class="span10 center">
+			<div class="span12">
 
-{% for profile in profiles %}								
-<div class="tab-pane fade active in" id="Researchers">
-<div class="bs-example">
-    <div class="panel-group" id="accordion">
-			<div class="panel panel-default">
-            <div class="panel-heading">
-                <h4 class="panel-title">
-                    <a data-toggle="collapse" data-parent="#accordion_{{ forloop.counter }}" href="#collapseThree_{{ forloop.counter }}">{{profile.Fname}} {{profile.Lname}}</a>
-                </h4>
-            </div>
-            <div id="collapsetThree_{{ forloop.counter }}" >
-                <div class="panel-body">
-                	<p>{% load static %}<img style="height: 150px; width 150px;" src ="{% static 'profilePictures/' %}{{profile.investigator_tag}}.jpg" alt="No picture available"></p> <!-- Loads the researcher pictures from /HIVE/searchFunction/static/profilePictures/--> <!-- This is probably where to focus for fixing the image sizing problem--> 
-                    <p><b>Location</b> : {{profile.city}}, {{profile.state}}, {{profile.country}}</a></p>
-                    <p><b>Office</b> : {{profile.office}}</a></p>
-                    <p><b>Institution</b> : {{profile.institution}}</a></p>
-                    <p><b>Phone</b> : {{profile.phone}}</a></p>
-                    <p><b>Department</b> : {{profile.department}}</a></p>
-                    <!-- This is the link button at the bottom of every researcher result : redirects to the selected profile by passing the investigator tag to userprofiles in views.py-->
-                    <form action="/userprofile/" method="get">
-                    {% csrf_token %}
-                    {{ form }}
-                    <input type="hidden" name="investigator_tag" value="{{profile.investigator_tag}}">
-                    <input type="submit" class="btn btn-primary btn-sm" value="Visit Profile" name="btn"/>
-                    </form>
+			</div>
+			<div class="span12 well">
+				<ul class="nav nav-tabs">
+					<li class="active">
+						<a href="#Researchers" data-toggle="tab">Researchers</a>
+					</li>
+					<li>
+						<a href="#Grants" data-toggle="tab">Grants</a>
+					</li>
 
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-</div>
-{% endfor %}
-{% for Grant in Grants %}							
-<div class="tab-pane fade" id="Grants">
-			
-    	<div class="bs-example">
-    <div class="panel-group" id="accordion">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h4 class="panel-title">
-                    <a data-toggle="collapse" data-parent="#accordion_{{ forloop.counter }}" href="#collapseTwo_{{ forloop.counter }}">>{{Grant.grantTitle}} <br> {% for key,value in agvResults.items %}  {%if key == Grant.grantID %} Cosine Score: {{value}} {% endif %}{% endfor %}</a>
-                </h4>
-            </div>
-            <div id="collapseTwo_{{ forloop.counter }}" class="panel-collapse collapse">
-                <div class="panel-body">
-                    <p><b>Summary</b> : {{Grant.grantText}}</a></p>
-                    <p><b>Source</b> : {{Grant.grantLink|urlize}}</p>
+				</ul>
+				<div id="explorerTabContent" class="tab-content">
 
-                </div>
-            </div>
-        </div>
-    </div>
+					<div class="tab-pane fade active in" id="Researchers">
+						<div class="container">            
+							<table class="table table-condensed">
+								<thead>
+									<tr>
+										<th>Name</th>
+										<th>Institution</th>
+										<th>Department</th>
+										<th>Link to Profile</th>
+									</tr>
+								</thead>
+								{% for profile in profiles %}
+								<tbody>
+									
+									<tr>
+										<td>{{profile.Fname}} {{ profile.Lname}}</td>
+										<td>{{profile.institution}}</td>
+										<td>{{profile.department}}</td>
+										<td><form action="/userprofile/" method="get">
+											{% csrf_token %}
+											{{ form }}
+											<input type="hidden" name="investigator_tag" value="{{profile.investigator_tag}}">
+											<input type="submit" class="btn btn-primary btn-sm" value="Visit Profile" name="btn"/>
+										</form></td>
+										{% endfor %}
+									</tr>
+								</tbody>
+							</table>
+							
+						</div>
+					</div>
+
+
+
+
+				<div class="tab-pane fade" id="Grants">
+					<p>{% for Grant in Grants %}
+						<div class="bs-example">
+							<div class="panel-group" id="accordion">
+								<div class="panel panel-default">
+									<div class="panel-heading">
+										<h4 class="panel-title">
+											<a data-toggle="collapse" data-parent="#accordion_{{ forloop.counter }}" href="#collapseTwo_{{ forloop.counter }}">>{{Grant.grantTitle}} <br> {% for key,value in agvResults.items %}  {%if key == Grant.grantID %} Cosine Score: {{value}} {% endif %}{% endfor %}</a>
+										</h4>
+									</div>
+									<div id="collapseTwo_{{ forloop.counter }}" class="panel-collapse collapse">
+										<div class="panel-body">
+											<p><b>Summary</b> : {{Grant.grantText}}</a></p>
+											<p><b>Source</b> : {{Grant.grantLink|urlize}}</p>
+										</div>
+									</div>
+								</div>
+							</div>
+							{% endfor %}
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>
-</div>
-{% endfor %}
-</div>
-</div>
-</div>
-</div>
-</div>
-{% endblock %}
+
 </body>
+{% endblock %}
 </html>  
 
 

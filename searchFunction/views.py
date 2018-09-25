@@ -68,12 +68,13 @@ def profile(request):
 		profiles = Investigator.objects.all()
 		return render(request, 'searchFunction/profile.html',{'profiles' : profiles})
 
-def userprofile(request): #This bit is still under construction
+def userprofile(request): 
 	citationList = []
 	if request.method == 'GET':
 		p=(request.GET.get('investigator_tag'))
 		Grants = grant_documents.objects.all()
-		citations = author2citation.objects.filter(author__icontains="Author_"+p).values()#This doesn't work yet
+		#The p[7:] is here to slice the "Author_" part off of the author tags, as the author tag in author2citation does not contain the "Author_" prefix
+		citations = author2citation.objects.values().filter(author__exact=p[7:])
 		for cList in citations:
 			citationList=(list(map(int, cList['citation_id'].split(","))))
 		publications = Publication.objects.filter(pmid__in=citationList)
@@ -83,7 +84,6 @@ def userprofile(request): #This bit is still under construction
 		simAuthors = simAll.filter(y_axis__contains='Author').order_by('-cosine_score').distinct()
 		# grantInfo = grant_documents.objects.filter(grantID__in=simGrants.values('y_axis')).distinct()
 		# authorInfo = Investigator.objects.filter(investigator_tag__in=simAuthors.values('y_axis')).distinct() 
-
 
 		return render(request, 'searchFunction/userprofile.html', {'profiles' : profiles, 'simGrants' : simGrants, 'simAuthors' : simAuthors, 'publications':publications} )
 

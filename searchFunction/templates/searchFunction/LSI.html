@@ -11,69 +11,6 @@
 <!--This block is shown after an LSI search is performed-->
 {% block terms %}
 <hr>
-<!--
-<h2>Results:</h2>
-<a href="#researcherLoc">Click Here to Jump to Researchers </a>
-
-<h3>Available Grant Information:</h3>
-
-    <p>{% for Grant in Grants %}
-    	<div class="bs-example">
-    <div class="panel-group" id="accordion">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h4 class="panel-title">
-                    <a data-toggle="collapse" data-parent="#accordion_{{ forloop.counter }}" href="#collapseTwo_{{ forloop.counter }}">>{{Grant.grantTitle}} <br> {% for key,value in agvResults.items %}  {%if key == Grant.grantID %} Cosine Score: {{value}} {% endif %}{% endfor %}</a>
-                </h4>
-            </div>
-            <div id="collapseTwo_{{ forloop.counter }}" class="panel-collapse collapse">
-                <div class="panel-body">
-                    <p><b>Summary</b> : {{Grant.grantText}}</a></p>
-                    <p><b>Source</b> : {{Grant.grantLink|urlize}}</p>
-
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-</body>
-</html>  
-{% endfor %}</p>
-
-<a name="researcherLoc"></a>
-<h3>Available Researcher Information:</h3>
-{% for profile in profiles %}
-<div class="bs-example">
-    <div class="panel-group" id="accordion">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h4 class="panel-title">
-                    <a data-toggle="collapse" data-parent="#accordion_{{ forloop.counter }}" href="#collapseThree_{{ forloop.counter }}">{{profile.Fname}} {{profile.Lname}}</a>
-                </h4>
-            </div>
-            <div id="collapsetThree_{{ forloop.counter }}" class="panel-collapse">
-                <div class="panel-body">
-                	<p>{% load static %}<img style="height: 150px; width 150px;" src ="{% static 'profilePictures/' %}{{profile.investigator_tag}}.jpg" alt="No picture available"></p> 
-
-                    <p><b>Location</b> : {{profile.city}}, {{profile.state}}, {{profile.country}}</a></p>
-                    <p><b>Office</b> : {{profile.office}}</a></p>
-                    <p><b>Institution</b> : {{profile.institution}}</a></p>
-                    <p><b>Phone</b> : {{profile.phone}}</a></p>
-                    <p><b>Department</b> : {{profile.department}}</a></p>
-                    <form action="/userprofile/" method="get">
-                    	{% csrf_token %}
-                    	{{ form }}
-                    	<input type="hidden" name="investigator_tag" value="{{profile.investigator_tag}}">
-                    	<input type="submit" class="btn btn-primary btn-sm" value="Visit Profile" name="btn"/>
-                    </form>
-
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-{% endfor %} -->
-
 <br />
 <br />
 <br />
@@ -130,32 +67,32 @@
 
 
 
-				<div class="tab-pane fade" id="Grants">
-					<p>{% for Grant in Grants %}
-						<div class="bs-example">
-							<div class="panel-group" id="accordion">
-								<div class="panel panel-default">
-									<div class="panel-heading">
-										<h4 class="panel-title">
-											<a data-toggle="collapse" data-parent="#accordion_{{ forloop.counter }}" href="#collapseTwo_{{ forloop.counter }}">>{{Grant.grantTitle}} <br> {% for key,value in agvResults.items %}  {%if key == Grant.grantID %} Cosine Score: {{value}} {% endif %}{% endfor %}</a>
-										</h4>
-									</div>
-									<div id="collapseTwo_{{ forloop.counter }}" class="panel-collapse collapse">
-										<div class="panel-body">
-											<p><b>Summary</b> : {{Grant.grantText}}</a></p>
-											<p><b>Source</b> : {{Grant.grantLink|urlize}}</p>
+					<div class="tab-pane fade" id="Grants">
+						<p>{% for Grant in Grants %}
+							<div class="bs-example">
+								<div class="panel-group" id="accordion">
+									<div class="panel panel-default">
+										<div class="panel-heading">
+											<h4 class="panel-title">
+												<a data-toggle="collapse" data-parent="#accordion_{{ forloop.counter }}" href="#collapseTwo_{{ forloop.counter }}">>{{Grant.grantTitle}} <br> {% for key,value in agvResults.items %}  {%if key == Grant.grantID %} Cosine Score: {{value}} {% endif %}{% endfor %}</a>
+											</h4>
+										</div>
+										<div id="collapseTwo_{{ forloop.counter }}" class="panel-collapse collapse">
+											<div class="panel-body">
+												<p><b>Summary</b> : {{Grant.grantText}}</a></p>
+												<p><b>Source</b> : {{Grant.grantLink|urlize}}</p>
+											</div>
 										</div>
 									</div>
+									{% endfor %}
 								</div>
 							</div>
-							{% endfor %}
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
-</div>
 
 </body>
 {% endblock %}

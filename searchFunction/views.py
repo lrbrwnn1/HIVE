@@ -14,7 +14,9 @@ from sklearn.metrics.pairwise import cosine_similarity
 from django.db.models import FloatField
 from django.db.models.functions import Cast
 from django.views.decorators.cache import cache_page
-
+import pygal
+from django.views.generic import TemplateView
+from .charts import MeshChart, AuthorChart
 
 #@cache_page(60 * 10080)
 def index(request):
@@ -84,7 +86,7 @@ def userprofile(request):
 		simAuthors = simAll.filter(y_axis__contains='Author').order_by('-cosine_score').distinct()
 		# grantInfo = grant_documents.objects.filter(grantID__in=simGrants.values('y_axis')).distinct()
 		# authorInfo = Investigator.objects.filter(investigator_tag__in=simAuthors.values('y_axis')).distinct() 
-
+		MeshChart.chart(publications)
+		AuthorChart.chart(publications)
 		return render(request, 'searchFunction/userprofile.html', {'profiles' : profiles, 'simGrants' : simGrants, 'simAuthors' : simAuthors, 'publications':publications} )
-
 

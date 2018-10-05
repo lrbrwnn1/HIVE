@@ -1,5 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/
+font-awesome.min.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -8,6 +14,7 @@
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="http://kozea.github.com/pygal.js/latest/pygal-tooltips.min.js"></script>
 	<style type="text/css">
 	.bs-example{
 		margin: 20px;
@@ -15,7 +22,100 @@
 </style>
 </head>
 <body>
+	<!-- Navbar (sit on top) -->
+	<div id="navbar" class="w3-top">
+		<div class="w3-bar w3-white w3-padding w3-card" style="letter-spacing:4px;">
+			<a href="/" class="w3-bar-item w3-button">HIVE</a>
+			<!-- Right-sided navbar links. Hide them on small screens-->        
+			<div class="w3-right w3-hide-small">
+				<a href="#about" class="w3-bar-item w3-button" data-toggle="modal" data-target="#aboutModal">ABOUT</a>
+				<a href="#contact" class="w3-bar-item w3-button" data-toggle="modal" data-target="#helpModal">HELP</a>
+			</div>
+		</div>
+	</div>
+	<br>
+	<br>
+	<!-- Begin Modals -->
 
+	<!-- Modal that provides information about HIVE -->
+	<div class="modal fade" id="aboutModal" role="dialog">
+		<div class="modal-dialog modal-lg">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+					<h4 class="modal-title">HIVE</h4>
+				</div>
+				<div class="modal-body">
+					<div class="modal-body">
+						<div class="media">
+							<p class="lead">
+								HIVE provides principal investigators with the tools they need to find suitable collaborators and funding relevant to their
+								research.
+							</p>
+							<p>
+								<em>
+									We accomplish this through clever application of new and traditional information retrieval methods: A basic keyword search
+									and conceptual search via LSI.<br>
+									Typical keyword searches are provided to give you "directly associated" results relative to your queries.
+									However, through conceptual search we provide you with the ability to find previously invisible implied associations.
+								</em>
+							</p>
+
+							<h3>Who's Behind This?</h3>
+							<div class="media">
+								<a class="pull-left" href="#">
+									<img class="media-object" data-src="res/images/um.png">
+								</a>
+								<div class="media-body">
+									<h5 class="media-heading"><em>The Bioinformatics Dept @ The University of Memphis</em></h5>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Modal that provides help information for the current page -->
+	<div class="modal fade" id="helpModal" role="dialog">
+		<div class="modal-dialog modal-lg">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+					<h4 class="modal-title">HIVE</h4>
+				</div>
+				<div class="modal-body">
+					<h3>Information</h3>
+					<p>The information provided on each researcher is divided into 4 tabs:</p>
+					<ul>
+						<li>Profile : Basic infomation on the researcher, such as their institution, top research interests, phone number and department.  </li>
+						<li>Publications : A regularly updated list of the researcher's publications. Cliocking on the title on a publication reveals the abstract and other information about that particular paper.  </li>
+						<li>Researcher Suggestions : LSI-powered researcher collaboration recommendations based upon the publication history of all researchers in the system. </li>
+						<li>Grant Suggestions : LSI-powered grant recommendation system based upon the researcher's publication history and the text of all currently available grants from the NIH. </li>
+					</ul>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Modal that provides help information for the current page -->
+	<div id="helpModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="helpModalLabel" aria-hidden="true">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+			<h3 id="helpModalLabel">Help</h3>
+		</div>
+
+		<div class="modal-footer">
+			<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+		</div>
+	</div>
 	<div class="span12 alpha">
 		<div class="span8 center vspace-small">
 			<div class="span10 center">
@@ -50,6 +150,9 @@
 							<p><b>Department :</b> {{profile.department}}</a></p>
 						</div>
 						{% endfor %}
+						<hr>
+							<embed type="image/svg+xml" src="../static/mesh_chart.svg" width="600"/>
+							<embed type="image/svg+xml" src="../static/author_chart.svg" width="600"/>
 
 						<div class="tab-pane fade" id="Publications">
 							<p>{% for publication in publications %}
@@ -108,7 +211,7 @@
 			</div>
 		</div>
 	</div>
-
+	
 
 
 </body>

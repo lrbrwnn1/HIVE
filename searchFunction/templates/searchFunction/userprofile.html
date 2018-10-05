@@ -6,22 +6,27 @@ font-awesome.min.css">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="http://kozea.github.com/pygal.js/latest/pygal-tooltips.min.js"></script>
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>Researcher Profiles</title>
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-	<script type="text/javascript" src="http://kozea.github.com/pygal.js/latest/pygal-tooltips.min.js"></script>
-	<style type="text/css">
+
+<style type="text/css">
 	.bs-example{
 		margin: 20px;
 	}
+	body{
+	 
+	}
 </style>
+
 </head>
+
 <body>
+
+
 	<!-- Navbar (sit on top) -->
 	<div id="navbar" class="w3-top">
 		<div class="w3-bar w3-white w3-padding w3-card" style="letter-spacing:4px;">
@@ -34,6 +39,8 @@ font-awesome.min.css">
 		</div>
 	</div>
 	<br>
+	<br>
+		<br>
 	<br>
 	<!-- Begin Modals -->
 
@@ -80,6 +87,7 @@ font-awesome.min.css">
 		</div>
 	</div>
 
+
 	<!-- Modal that provides help information for the current page -->
 	<div class="modal fade" id="helpModal" role="dialog">
 		<div class="modal-dialog modal-lg">
@@ -105,6 +113,7 @@ font-awesome.min.css">
 		</div>
 	</div>
 
+
 	<!-- Modal that provides help information for the current page -->
 	<div id="helpModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="helpModalLabel" aria-hidden="true">
 		<div class="modal-header">
@@ -116,101 +125,69 @@ font-awesome.min.css">
 			<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
 		</div>
 	</div>
-	<div class="span12 alpha">
-		<div class="span8 center vspace-small">
-			<div class="span10 center">
-				<div class="span12">
-				</div>
-				<!-- Tabs at the top of the profile page are instantiated here-->
-				<div class="span12 well">
-					<ul class="nav nav-tabs">
-						<li class="active">
-							<a href="#Profile" data-toggle="tab">Profile</a>
-						</li>
-						<li>
-							<a href="#Publications" data-toggle="tab">Publications</a>
-						</li>
-						<li>
-							<a href="#TopJournals" data-toggle="tab">Researcher Suggestions</a>
-						</li>
-						<li>
-							<a href="#GrantNetwork" data-toggle="tab">Grant Suggestions</a>
-						</li>
-					</ul>
-					<!-- Tab contents-->
-					<div id="explorerTabContent" class="tab-content">
-						<div class="tab-pane fade active in" id="Profile">
-							{% for profile in profiles %}
-							<p>{% load static %}<img style="height: 150px; width 150px;" src ="{% static 'profilePictures/' %}{{profile.investigator_tag}}.jpg" alt="No picture available"></p> <!-- Loads the researcher pictures from /HIVE/searchFunction/static/profilePictures/-->
-							<p><h3><b>{{profile.Fname}} {{profile.Lname}}</b></h3></a></p>
-							<p><b>Location :</b> {{profile.city}}, {{profile.state}}, {{profile.country}}</a></p>
-							<p><b>Office :</b> {{profile.office}}</a></p>
-							<p><b>Institution :</b> {{profile.institution}}</a></p>
-							<p><b>Phone :</b> {{profile.phone}}</a></p>
-							<p><b>Department :</b> {{profile.department}}</a></p>
+	
+<!-- Tabs Start Here -->
+	<ul class="nav nav-tabs">
+  <li class="active"><a data-toggle="tab" href="#home">Profile</a></li>
+  <li><a data-toggle="tab" href="#menu1">Publications</a></li>
+  <li><a data-toggle="tab" href="#menu2">Researcher Suggestions</a></li>
+  <li><a data-toggle="tab" href="#menu3">Grant Suggestions</a></li>
+</ul>
+
+<div class="tab-content">
+
+  <div id="home" class="tab-pane fade in active">
+	{% for profile in profiles %}
+		<p>{% load static %}<img style="height: 150px; width 150px;" src ="{% static 'profilePictures/' %}{{profile.investigator_tag}}.jpg" alt="No picture available"></p> <!-- Loads the researcher pictures from /HIVE/searchFunction/static/profilePictures/-->
+		<p><h3><b>{{profile.Fname}} {{profile.Lname}}</b></h3></a></p>
+		<p><b>Location :</b> {{profile.city}}, {{profile.state}}, {{profile.country}}</a></p>
+		<p><b>Office :</b> {{profile.office}}</a></p>
+		<p><b>Institution :</b> {{profile.institution}}</a></p>
+		<p><b>Phone :</b> {{profile.phone}}</a></p>
+		<p><b>Department :</b> {{profile.department}}</a></p>
+	{% endfor %}
+	<hr>
+	<embed type="image/svg+xml" src="../static/mesh_chart.svg" width="600"/>
+	<hr>
+	<embed type="image/svg+xml" src="../static/author_chart.svg" width="600"/>
+  </div>
+
+
+
+  <div id="menu1" class="tab-pane fade">
+	<p>{% for publication in publications %}</p>
+		<div class="bs-example">
+			<div class="panel-group" id="accordion">
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<h4 class="panel-title">
+							<a data-toggle="collapse" data-parent="#accordion_{{ forloop.counter }}" href="#collapseTwo_{{ forloop.counter }}">>{{publication.title}}</a>
+						</h4>
+					</div>
+					<div id="collapseTwo_{{ forloop.counter }}" class="panel-collapse collapse">
+						<div class="panel-body">
+							<p><b>Abstract</b> : {{publication.abstract}}</a></p>
+							<p><b>Authors</b> : {{publication.authors| cut:"[" |cut:"]"|cut:"'"}}</p>
+							<p><b>Source</b> : {{publication.source}}</p>
+							<p><b>Date Published</b> : {{publication.datePublished}}</p>
+							<p><b>MeSH Headings</b> : {{publication.meshHeadings| cut:"[" |cut:"]"|cut:"'"}}</p>
 						</div>
-						{% endfor %}
-						<hr>
-							<embed type="image/svg+xml" src="../static/mesh_chart.svg" width="600"/>
-							<embed type="image/svg+xml" src="../static/author_chart.svg" width="600"/>
-
-						<div class="tab-pane fade" id="Publications">
-							<p>{% for publication in publications %}
-								<div class="bs-example">
-									<div class="panel-group" id="accordion">
-										<div class="panel panel-default">
-											<div class="panel-heading">
-												<h4 class="panel-title">
-													<a data-toggle="collapse" data-parent="#accordion_{{ forloop.counter }}" href="#collapseTwo_{{ forloop.counter }}">>{{publication.title}}</a>
-												</h4>
-											</div>
-											<div id="collapseTwo_{{ forloop.counter }}" class="panel-collapse collapse">
-												<div class="panel-body">
-													<p><b>Abstract</b> : {{publication.abstract}}</a></p>
-													<p><b>Authors</b> : {{publication.authors| cut:"[" |cut:"]"|cut:"'"}}</p>
-													<p><b>Source</b> : {{publication.source}}</p>
-													<p><b>Date Published</b> : {{publication.datePublished}}</p>
-													<p><b>MeSH Headings</b> : {{publication.meshHeadings| cut:"[" |cut:"]"|cut:"'"}}</p>
-												</div>
-											</div>
-										</div>
-									</div>
-									{% endfor %}
-								</div>
-							</div>
-						</div>
-
-						<div class="tab-pane fade" id="TopJournals">
-							{% for authors in authorInfo %}
-							<p>{{authors.Fname}} {{ authors.Lname}}</p>
-							{% endfor %}
-
-							{% for authorcos in simAuthors %}
-							<p>{{authorcos.y_axis}} <b>Similarity Score :</b>  {{authorcos.cosine_score}}</p>
-							{% endfor %}
-
-						</div>
-						<div class="tab-pane fade" id="GrantNetwork">
-							{% for g in grantInfo %}
-							{{g.grantTitle}}
-							{% endfor %}
-
-							{% for grants in simGrants %}
-							<p>{{grants.y_axis}} <b>Similarity Score :</b>  {{grants.cosine_score}}</p>
-							{% endfor %}
-						</div>
-
-						<div class="tab-pane fade" id="Histogram">
-
-							Histogram
-
-						</div>
-
 					</div>
 				</div>
 			</div>
 		</div>
-	</div>
+  </div>
+  {% endfor %}
+
+  <div id="menu2" class="tab-pane fade">
+
+  </div>
+
+  <div id="menu3" class="tab-pane fade">
+
+  </div>
+
+</div>
 	
 
 

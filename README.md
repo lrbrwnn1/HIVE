@@ -23,7 +23,6 @@ A search for reelin in this mode might return researchers and grants related to 
     * Added graphs to profile pages:	
     	*MeSH Heading graph
 	*Top Co-Authors
-    *Minor UI changes
     
 * 0.1.1
     * Added publication scraper 

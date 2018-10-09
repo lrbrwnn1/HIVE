@@ -15,6 +15,16 @@ The conceptual search uses latent semantic analysis to find conceptual similarit
 A search for reelin in this mode might return researchers and grants related to researching synaptic plasticity, even if their research does not explicitly mention reelin. 
 
 ## Release History
+* 0.1.2
+    * Added separate tabs for researchers and grants to results page
+    * Added publications tab in profiles - lists all available publications from that researcher
+    * Author search results changed to table design - more compact and readable.
+    * Navbar at top is now universal
+    * Added graphs to profile pages:	
+    	*MeSH Heading graph
+	*Top Co-Authors
+    *Minor UI changes
+    
 * 0.1.1
     * Added publication scraper 
     * Basic grant scraper functionality complete

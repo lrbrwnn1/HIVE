@@ -1,108 +1,198 @@
 <!DOCTYPE html>
 <html lang="en">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/
+font-awesome.min.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="http://kozea.github.com/pygal.js/latest/pygal-tooltips.min.js"></script>
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>Researcher Profiles</title>
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-	<style type="text/css">
+
+<style type="text/css">
 	.bs-example{
 		margin: 20px;
 	}
+	body{
+	 
+	}
 </style>
+
 </head>
+
 <body>
 
-	<div class="span12 alpha">
-		<div class="span8 center vspace-small">
-			<div class="span10 center">
-				<div class="span12">
-					
+
+	<!-- Navbar (sit on top) -->
+	<div id="navbar" class="w3-top">
+		<div class="w3-bar w3-white w3-padding w3-card" style="letter-spacing:4px;">
+			<a href="/" class="w3-bar-item w3-button">HIVE</a>
+			<!-- Right-sided navbar links. Hide them on small screens-->        
+			<div class="w3-right w3-hide-small">
+				<a href="#about" class="w3-bar-item w3-button" data-toggle="modal" data-target="#aboutModal">ABOUT</a>
+				<a href="#contact" class="w3-bar-item w3-button" data-toggle="modal" data-target="#helpModal">HELP</a>
+			</div>
+		</div>
+	</div>
+	<br>
+	<br>
+		<br>
+	<br>
+	<!-- Begin Modals -->
+
+	<!-- Modal that provides information about HIVE -->
+	<div class="modal fade" id="aboutModal" role="dialog">
+		<div class="modal-dialog modal-lg">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+					<h4 class="modal-title">HIVE</h4>
 				</div>
-				<div class="span12 well">
-					<ul class="nav nav-tabs">
-						<li class="active">
-							<a href="#Profile" data-toggle="tab">Profile</a>
-						</li>
-						<li>
-							<a href="#Publications" data-toggle="tab">Publications</a>
-						</li>
-						<li>
-							<!-- href="#ResearchNetwork" data-toggle="tab">Research Network</a -->
-						</li>
-<!-- 								<li>
-									<a href="#TopCoAuthors" data-toggle="tab">Top Co-Authors</a>
-								</li> -->
-								<li>
-									<a href="#TopJournals" data-toggle="tab">Researcher Suggestions</a>
-								</li>
-								<li>
-									<a href="#GrantNetwork" data-toggle="tab">Grant Suggestions</a>
-								</li>
-<!-- 								<li>
-									<a href="#Histogram" data-toggle="tab">Histogram</a>
-								</li> -->
-							</ul>
-							<div id="explorerTabContent" class="tab-content">
-								
-								<div class="tab-pane fade active in" id="Profile">
+				<div class="modal-body">
+					<div class="modal-body">
+						<div class="media">
+							<p class="lead">
+								HIVE provides principal investigators with the tools they need to find suitable collaborators and funding relevant to their
+								research.
+							</p>
+							<p>
+								<em>
+									We accomplish this through clever application of new and traditional information retrieval methods: A basic keyword search
+									and conceptual search via LSI.<br>
+									Typical keyword searches are provided to give you "directly associated" results relative to your queries.
+									However, through conceptual search we provide you with the ability to find previously invisible implied associations.
+								</em>
+							</p>
 
-									{% for profile in profiles %}
-									<p>{% load static %}<img style="height: 150px; width 150px;" src ="{% static 'profilePictures/' %}{{profile.investigator_tag}}.jpg" alt="No picture available"></p> <!-- Loads the researcher pictures from /HIVE/searchFunction/static/profilePictures/-->
-									<p><h3><b>{{profile.Fname}} {{profile.Lname}}</b></h3></a></p>
-									<p><b>Location :</b> {{profile.city}}, {{profile.state}}, {{profile.country}}</a></p>
-									<p><b>Office :</b> {{profile.office}}</a></p>
-									<p><b>Institution :</b> {{profile.institution}}</a></p>
-									<p><b>Phone :</b> {{profile.phone}}</a></p>
-									<p><b>Department :</b> {{profile.department}}</a></p>
+							<h3>Who's Behind This?</h3>
+							<div class="media">
+								<a class="pull-left" href="#">
+									<img class="media-object" data-src="res/images/um.png">
+								</a>
+								<div class="media-body">
+									<h5 class="media-heading"><em>The Bioinformatics Dept @ The University of Memphis</em></h5>
 								</div>
-								{% endfor %}
-
-								<div class="tab-pane fade" id="Publications">
-									
-									Publications
-									
-								</div>
-
-								<div class="tab-pane fade" id="TopJournals">
-									{% for authors in authorInfo %}
-									<p>{{authors.Fname}} {{ authors.Lname}}</p>
-									{% endfor %}
-									
-									{% for authorcos in simAuthors %}
-									<p>{{authorcos.y_axis}} <b>Similarity Score :</b>  {{authorcos.cosine_score}}</p>
-									{% endfor %}
-									
-								</div>
-								<div class="tab-pane fade" id="GrantNetwork">
-									{% for g in grantInfo %}
-									{{g.grantTitle}}
-									{% endfor %}
-
-									{% for grants in simGrants %}
-									<p>{{grants.y_axis}} <b>Similarity Score :</b>  {{grants.cosine_score}}</p>
-									{% endfor %}
-								</div>
-
-								<div class="tab-pane fade" id="Histogram">
-								
-									Histogram
-									
-								</div>
-								
 							</div>
 						</div>
 					</div>
 				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				</div>
 			</div>
+		</div>
+	</div>
+
+
+	<!-- Modal that provides help information for the current page -->
+	<div class="modal fade" id="helpModal" role="dialog">
+		<div class="modal-dialog modal-lg">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+					<h4 class="modal-title">HIVE</h4>
+				</div>
+				<div class="modal-body">
+					<h3>Information</h3>
+					<p>The information provided on each researcher is divided into 4 tabs:</p>
+					<ul>
+						<li>Profile : Basic infomation on the researcher, such as their institution, top research interests, phone number and department.  </li>
+						<li>Publications : A regularly updated list of the researcher's publications. Cliocking on the title on a publication reveals the abstract and other information about that particular paper.  </li>
+						<li>Researcher Suggestions : LSI-powered researcher collaboration recommendations based upon the publication history of all researchers in the system. </li>
+						<li>Grant Suggestions : LSI-powered grant recommendation system based upon the researcher's publication history and the text of all currently available grants from the NIH. </li>
+					</ul>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+	<!-- Modal that provides help information for the current page -->
+	<div id="helpModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="helpModalLabel" aria-hidden="true">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+			<h3 id="helpModalLabel">Help</h3>
+		</div>
+
+		<div class="modal-footer">
+			<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+		</div>
+	</div>
+	
+<!-- Tabs Start Here -->
+	<ul class="nav nav-tabs">
+  <li class="active"><a data-toggle="tab" href="#home">Profile</a></li>
+  <li><a data-toggle="tab" href="#menu1">Publications</a></li>
+  <li><a data-toggle="tab" href="#menu2">Researcher Suggestions</a></li>
+  <li><a data-toggle="tab" href="#menu3">Grant Suggestions</a></li>
+</ul>
+
+<div class="tab-content">
+
+  <div id="home" class="tab-pane fade in active">
+	{% for profile in profiles %}
+		<p>{% load static %}<img style="height: 150px; width 150px;" src ="{% static 'profilePictures/' %}{{profile.investigator_tag}}.jpg" alt="No picture available"></p> <!-- Loads the researcher pictures from /HIVE/searchFunction/static/profilePictures/-->
+		<p><h3><b>{{profile.Fname}} {{profile.Lname}}</b></h3></a></p>
+		<p><b>Location :</b> {{profile.city}}, {{profile.state}}, {{profile.country}}</a></p>
+		<p><b>Office :</b> {{profile.office}}</a></p>
+		<p><b>Institution :</b> {{profile.institution}}</a></p>
+		<p><b>Phone :</b> {{profile.phone}}</a></p>
+		<p><b>Department :</b> {{profile.department}}</a></p>
+	{% endfor %}
+	<hr>
+	<embed type="image/svg+xml" src="../static/mesh_chart.svg" width="600"/>
+	<hr>
+	<embed type="image/svg+xml" src="../static/author_chart.svg" width="600"/>
+  </div>
 
 
 
-		</body>
-		</html>                                                               
+  <div id="menu1" class="tab-pane fade">
+	<p>{% for publication in publications %}</p>
+		<div class="bs-example">
+			<div class="panel-group" id="accordion">
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<h4 class="panel-title">
+							<a data-toggle="collapse" data-parent="#accordion_{{ forloop.counter }}" href="#collapseTwo_{{ forloop.counter }}">>{{publication.title}}</a>
+						</h4>
+					</div>
+					<div id="collapseTwo_{{ forloop.counter }}" class="panel-collapse collapse">
+						<div class="panel-body">
+							<p><b>Abstract</b> : {{publication.abstract}}</a></p>
+							<p><b>Authors</b> : {{publication.authors| cut:"[" |cut:"]"|cut:"'"}}</p>
+							<p><b>Source</b> : {{publication.source}}</p>
+							<p><b>Date Published</b> : {{publication.datePublished}}</p>
+							<p><b>MeSH Headings</b> : {{publication.meshHeadings| cut:"[" |cut:"]"|cut:"'"}}</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+  </div>
+  {% endfor %}
+
+  <div id="menu2" class="tab-pane fade">
+
+  </div>
+
+  <div id="menu3" class="tab-pane fade">
+
+  </div>
+
+</div>
+	
+
+
+</body>
+</html>                                                               
 
 
 

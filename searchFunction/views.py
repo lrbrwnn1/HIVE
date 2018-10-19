@@ -1,3 +1,4 @@
+from __future__ import unicode_literals
 from django.shortcuts import render
 from .models import Investigator
 from .models import Publication
@@ -16,7 +17,8 @@ from django.db.models.functions import Cast
 from django.views.decorators.cache import cache_page
 import pygal
 from django.views.generic import TemplateView
-from .charts import MeshChart, AuthorChart
+from .charts import MeshChart, AuthorChart, PublicationHistoryChart
+
 
 #@cache_page(60 * 10080)
 def index(request):
@@ -27,10 +29,10 @@ def results(request):
 		search_query = request.GET.get('search_box', None)
 		grants = Grant.objects.filter(title__icontains=search_query).values('title', 'expiryDate', "guidelink", "openDate", "parentFOA", "agency")
 		profiles = Investigator.objects.all()
-		return render(request, 'searchFunction/results.html',{'grants': grants, 'profiles' : profiles}) #the render method is essentially what passes variables into the html templates.
+		return render(request, 'searchFunction/results.html',{'grants': grants, 'profiles' : profiles}) 
 
-#Here we have the term matched to it's vector, 
-#then take the vectors and iterate through all author/grant vectors and find the cos value for each combination 
+#Here we have the term matched to its vector, 
+#then take the vectors and iterate through all author/grant vectors and find the cos value for each combination dynamically
 
 def LSI(request):
 	if request.method == 'GET':
@@ -84,9 +86,11 @@ def userprofile(request):
 		simAll = authors_grants_pairwise_cosine_similarity_matrix.objects.filter(x_axis__contains=p).filter(cosine_score__gt=.2).exclude(y_axis=p)
 		simGrants = simAll.filter(y_axis__contains='Grant').order_by('-cosine_score').distinct()
 		simAuthors = simAll.filter(y_axis__contains='Author').order_by('-cosine_score').distinct()
-		# grantInfo = grant_documents.objects.filter(grantID__in=simGrants.values('y_axis')).distinct()
-		# authorInfo = Investigator.objects.filter(investigator_tag__in=simAuthors.values('y_axis')).distinct() 
+		grantInfo = grant_documents.objects.filter(grantID__in=simGrants.values('y_axis')).distinct()
+		authorInfo = Investigator.objects.filter(investigator_tag__in=simAuthors.values('y_axis')).distinct() 
 		MeshChart.chart(publications)
 		AuthorChart.chart(publications)
+		PublicationHistoryChart.chart(publications)
+
 		return render(request, 'searchFunction/userprofile.html', {'profiles' : profiles, 'simGrants' : simGrants, 'simAuthors' : simAuthors, 'publications':publications} )
 

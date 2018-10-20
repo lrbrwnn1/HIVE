@@ -37,7 +37,16 @@ class MeshChart():
 		      thingy[b]=1
 		x = dict(Counter(thingy).most_common(10))
 		#Graph Creation
-		bar_chart = pygal.HorizontalBar(title=u'Top Research Interests by MeSH Headings', style=BlueStyle, legend_at_bottom=True)               
+		bar_chart = pygal.HorizontalBar(
+			title=u'Top Research Interests by MeSH Headings', 
+			x_title='Frequency',
+			y_title='MeSH Heading',
+			print_values=True,
+			print_labels=True,
+			style=BlueStyle(
+            value_font_family='googlefont:Raleway',
+	        value_font_size=30,
+	        value_colors=('white',)))               
 		for y in x:
 			bar_chart.add(y, x[y])
 		bar_chart.render_to_file('./searchFunction/static/mesh_chart.svg')
@@ -65,7 +74,16 @@ class AuthorChart():
 		      thingy[b]=1
 		x = dict(Counter(thingy).most_common(6)[1:]) #The "[1:]" list slice here is because the most common researchers will always be themselves, so we remove the self-reference.
 		#Graph Creation
-		bar_chart = pygal.Pie(inner_radius=.4, title=u'Top Co-authors', style=BlueStyle, legend_at_bottom=True)               
+		bar_chart = pygal.HorizontalBar(
+			title=u'Top Co-authors',			
+			x_title='Number of papers co-authored',
+			y_title='Co-author',
+			print_values=True,
+			print_labels=True,
+			style=BlueStyle(
+            value_font_family='googlefont:Raleway',
+	        value_font_size=30,
+	        value_colors=('white',)))              
 		for y in x:
 			bar_chart.add(y, x[y])
 		bar_chart.render_to_file('./searchFunction/static/author_chart.svg')
@@ -86,7 +104,17 @@ class PublicationHistoryChart():
 
 		result= dict(x)
 		#Graph Creation
-		line_chart = pygal.Bar(inner_radius=.4, title=u'Publication History', style=BlueStyle, legend_at_bottom=True)    
+		line_chart = pygal.Bar(
+			inner_radius=.4, 
+			title=u'Publication History',			
+			x_title='Year',
+			y_title='Number of papers',
+			print_values=True,
+			print_labels=True,
+			style=BlueStyle(
+            value_font_family='googlefont:Raleway',
+	        value_font_size=30,
+	        value_colors=('white',)))    
 		for x in result:
 			line_chart.add(x , result[x])
 		line_chart.render_to_file('./searchFunction/static/pubHistory_chart.svg')

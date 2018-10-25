@@ -1,4 +1,3 @@
-from __future__ import unicode_literals
 from django.shortcuts import render
 from .models import Investigator
 from .models import Publication
@@ -18,15 +17,15 @@ from django.views.decorators.cache import cache_page
 import pygal
 from django.views.generic import TemplateView
 from .charts import MeshChart, AuthorChart, PublicationHistoryChart
-
-
+import django_tables2 as tables
+from django_tables2 import RequestConfig
 #@cache_page(60 * 10080)
 def index(request):
 	return render(request, 'searchFunction/index.html',{})
 
 def results(request):
 	if request.method == 'GET':
-		search_query = request.GET.get('search_box', None)
+		search_query = request.GET.get('search_param', None)
 		grants = Grant.objects.filter(title__icontains=search_query).values('title', 'expiryDate', "guidelink", "openDate", "parentFOA", "agency")
 		profiles = Investigator.objects.all()
 		return render(request, 'searchFunction/results.html',{'grants': grants, 'profiles' : profiles}) 
@@ -54,23 +53,20 @@ def LSI(request):
 			count = 0 #The count is to match each cosine similarity with the sql ID of each author grant that it belongs to (as seen in termVectorsFiltered)
 			for y in agvList:
 				count+=1
-				if cosine_similarity([x],[y])[0][0]>.1: #The number here is the threshold for whether or not results are displayed. I'd like to have a slider bar in the UI later on so that users can narrow or expand the results dynamically.
+				if cosine_similarity([x],[y])[0][0]>.1: #The number here is the threshold for whether or not results are displayed. 
 					agvResults[count] = cosine_similarity([x],[y])[0][0]
 		
 		g = agvResults.keys()
+
 		termVectorsFiltered = author_grant_vectors.objects.filter(id__in=g)
-		Authors = termVectorsFiltered.filter(item__contains='Author')
+
 		authorsFiltered = termVectorsFiltered.filter(item__contains='Author').values_list('item')
 		grantsFiltered = termVectorsFiltered.filter(item__contains='Grant').values_list('item')
+		
 		profiles = Investigator.objects.filter(investigator_tag__in=authorsFiltered).values()
 		Grants = grant_documents.objects.filter(grantID__in=grantsFiltered).values()
-
-		return render(request, 'searchFunction/LSI.html',{'Authors' :  Authors, 'Grants' :  Grants, 'profiles' : profiles, 'agvResults' : agvResults})
-
-def profile(request):
-	if request.method == 'GET':
-		profiles = Investigator.objects.all()
-		return render(request, 'searchFunction/profile.html',{'profiles' : profiles})
+		df()
+		return render(request, 'searchFunction/LSI.html',{'Grants' :  Grants, 'profiles' : profiles, 'agvResults' : agvResults})
 
 def userprofile(request): 
 	citationList = []

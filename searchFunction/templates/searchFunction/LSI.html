@@ -1,15 +1,42 @@
 {% extends "./index.html" %}
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+{% block terms %}
+
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
 <style type="text/css">
 .bs-example{
 	margin: 20px;
 }
 </style>
-<!--This block is shown after an LSI search is performed-->
-{% block terms %}
+
+<head>
+
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<script type="text/javascript">
+		$(function() {
+    $("td[colspan=3]").find("p").hide();
+    $("table").click(function(event) {
+        event.stopPropagation();
+        var $target = $(event.target);
+        if ( $target.closest("td").attr("colspan") > 1 ) {
+            $target.slideUp();
+            $target.closest("tr").prev().find("td:first").html("+");
+        } else {
+            $target.closest("tr").next().find("p").slideToggle();
+            if ($target.closest("tr").find("td:first").html() == "+")
+                $target.closest("tr").find("td:first").html("-");
+            else
+                $target.closest("tr").find("td:first").html("+");                
+        }                    
+    });
+});
+	</script>
+
+</head>
+
+<body>
+
 <hr>
 <br />
 <br />
@@ -17,9 +44,6 @@
 <div class="span12 alpha">
 	<div class="span8 center vspace-small">
 		<div class="span10 center">
-			<div class="span12">
-
-			</div>
 			<div class="span12 well">
 				<ul class="nav nav-tabs">
 					<li class="active">
@@ -28,7 +52,6 @@
 					<li>
 						<a href="#Grants" data-toggle="tab">Grants</a>
 					</li>
-
 				</ul>
 				<div id="explorerTabContent" class="tab-content">
 
@@ -40,16 +63,19 @@
 										<th>Name</th>
 										<th>Institution</th>
 										<th>Department</th>
+										<th>Cosine Score</th>
 										<th>Link to Profile</th>
 									</tr>
 								</thead>
 								{% for profile in profiles %}
 								<tbody>
-									
 									<tr>
 										<td>{{profile.Fname}} {{ profile.Lname}}</td>
 										<td>{{profile.institution}}</td>
 										<td>{{profile.department}}</td>
+										{% for key, value in agvResults.items %}
+										<td>{% if key == profile.id %}{{value}}{% endif %}</td>
+										{% endfor %}
 										<td><form action="/userprofile/" method="get">
 											{% csrf_token %}
 											{{ form }}
@@ -68,31 +94,30 @@
 
 
 					<div class="tab-pane fade" id="Grants">
-						<p>{% for Grant in Grants %}
-							<div class="bs-example">
-								<div class="panel-group" id="accordion">
-									<div class="panel panel-default">
-										<div class="panel-heading">
-											<h4 class="panel-title">
-												<a data-toggle="collapse" data-parent="#accordion_{{ forloop.counter }}" href="#collapseTwo_{{ forloop.counter }}">>{{Grant.grantTitle}} <br> {% for key,value in agvResults.items %}  {%if key == Grant.grantID %} Cosine Score: {{value}} {% endif %}{% endfor %}</a>
-											</h4>
-										</div>
-										<div id="collapseTwo_{{ forloop.counter }}" class="panel-collapse collapse">
-											<div class="panel-body">
-												<p><b>Summary</b> : {{Grant.grantText}}</a></p>
-												<p><b>Source</b> : {{Grant.grantLink|urlize}}</p>
-											</div>
-										</div>
-									</div>
-									{% endfor %}
-								</div>
-							</div>
-						</div>
+							<table class="table table-condensed">
+								<thead>
+									<tr>
+										<th></th>
+										<th>Grant Title</th>
+										<th>Cosine Score</th>
+									</tr>
+								</thead>
+								{% for Grant in Grants %}
+								<tbody>
+									<tr><td>+</td><td><p>{{Grant.grantTitle}}</p></td></tr>
+								    <tr><td colspan="3">
+					    				<p><b>Summary</b> : {{Grant.grantText}}</p>
+										<p><b>Source</b> : {{Grant.grantLink|urlize}}</p>
+								    </td></tr>
+							    </tbody>
+							    {% endfor %}
+							</table>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
+</div>
 
 </body>
 {% endblock %}

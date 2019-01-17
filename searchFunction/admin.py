@@ -1,23 +1,21 @@
 from django.contrib import admin
-from .models import Investigator, Grant, Publication, grant_documents
 
-class InvestigatorAdmin(admin.ModelAdmin):
-    list_display = ('id', 'email','Fname', 'Lname','MI', 'picture', 'investigator_tag')
-    list_editable = ()
+from .models import Investigator
+from .models import Publication
+from .models import Grant
+from .models import ClinicalTrial
+from .models import terms_list
+from .models import similarity_matrix
 
-class GrantAdmin(admin.ModelAdmin):
-    list_displayGrant = ('grant_id', 'investigator_id', 'title', 'agency', 'guidelink', 'expiryDate')
-    list_editableGrant = ()
+class PubAdmin(admin.ModelAdmin):
+    model = Publication
+    list_display = ['title', 'investigator_tag', ]
 
-class PublicationAdmin(admin.ModelAdmin):
-    list_displayPublication = ('publication_id', 'title', 'medline', 'guidelink')
-    list_editablePublication = ()  
 
-class GrantDocumentAdmin(admin.ModelAdmin):
-    list_displayGrantdocuments = ('grantTitle', 'grantID', 'grantText', 'grantLink')
-    list_editableGrant = () 
 
-admin.site.register(Investigator, InvestigatorAdmin)
-admin.site.register(Grant, GrantAdmin)
-admin.site.register(Publication, PublicationAdmin)
-admin.site.register(grant_documents, GrantDocumentAdmin)
+admin.site.register(Investigator)
+admin.site.register(Publication, PubAdmin)
+admin.site.register(Grant)
+admin.site.register(ClinicalTrial)
+
+

@@ -3,13 +3,6 @@ import pygal
 from collections import Counter
 from .models import Investigator
 from .models import Publication
-from .models import Grant
-from .models import terms_list
-from .models import author2citation
-from .models import term_vectors
-from .models import author_grant_vectors
-from .models import grant_documents
-from .models import authors_grants_pairwise_cosine_similarity_matrix
 from django.http import HttpResponse
 from pygal.style import BlueStyle
 import re
@@ -38,6 +31,7 @@ class MeshChart():
 		x = dict(Counter(thingy).most_common(10))
 		#Graph Creation
 		bar_chart = pygal.HorizontalBar(
+			legend_at_bottom=True,
 			title=u'Top Research Interests by MeSH Headings', 
 			x_title='Frequency',
 			y_title='MeSH Heading',
@@ -94,6 +88,7 @@ class PublicationHistoryChart():
 		pubs = publications.values('datePublished')
 		#Data Generation and Formatting
 		g=[]
+		y=[]
 		for y in pubs:
 		  text = (y['datePublished'][:4])
 		  g.append(text)
@@ -105,6 +100,7 @@ class PublicationHistoryChart():
 		result= dict(x)
 		#Graph Creation
 		line_chart = pygal.Bar(
+
 			inner_radius=.4, 
 			title=u'Publication History',			
 			x_title='Year',

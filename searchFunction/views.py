@@ -2,91 +2,80 @@ from django.shortcuts import render
 from .models import Investigator
 from .models import Publication
 from .models import Grant
+from .models import ClinicalTrial
 from .models import terms_list
-from .models import author2citation
-from .models import term_vectors
-from .models import author_grant_vectors
-from .models import grant_documents
-from .models import authors_grants_pairwise_cosine_similarity_matrix
+from .models import items_list
+from .models import similarity_matrix
 from django.contrib.postgres.search import SearchQuery, SearchRank, SearchVector
 from django.views.generic import ListView
-from sklearn.metrics.pairwise import cosine_similarity
+from sklearn.metrics.pairwise import cosine_similarity, linear_kernel
 from django.db.models import FloatField
 from django.db.models.functions import Cast
 from django.views.decorators.cache import cache_page
 import pygal
 from django.views.generic import TemplateView
 from .charts import MeshChart, AuthorChart, PublicationHistoryChart
-import django_tables2 as tables
-from django_tables2 import RequestConfig
+from django.http import Http404
+
 #@cache_page(60 * 10080)
+
 def index(request):
 	return render(request, 'searchFunction/index.html',{})
 
 def results(request):
-	if request.method == 'GET':
-		search_query = request.GET.get('search_param', None)
-		grants = Grant.objects.filter(title__icontains=search_query).values('title', 'expiryDate', "guidelink", "openDate", "parentFOA", "agency")
-		profiles = Investigator.objects.all()
-		return render(request, 'searchFunction/results.html',{'grants': grants, 'profiles' : profiles}) 
+	print("under construction")
+# 	if request.method == 'GET':
+# 		search_query = request.GET.get('search_param', None)
+# 		grants = Grant.objects.filter(title__icontains=search_query).values('title', 'expiryDate', "guidelink", "openDate", "parentFOA", "agency")
+# 		profiles = Investigator.objects.all()
+# 		return render(request, 'searchFunction/results.html',{'grants': grants, 'profiles' : profiles}) 
 
 #Here we have the term matched to its vector, 
 #then take the vectors and iterate through all author/grant vectors and find the cos value for each combination dynamically
 
 def LSI(request):
 	if request.method == 'GET':
+		t=[]
 		LSI_search_query = request.GET.get('search_box', None)
-		tl = terms_list.objects.filter(term__icontains=LSI_search_query).values_list('id')#Search term lookup
-		termVectorQS = term_vectors.objects.filter(pk__in=tl).values()#match searched terms to vectors
-		termList = [] #temp lists to hold string lists until float conversion is done.
-		agvList = []
-		agvResults = {}
-		for vectorList in termVectorQS:
-			termList.append(list(map(float, vectorList['termVector'].split())))#Convert the vector strings to a list of floats
+		preterm = LSI_search_query.split(' ')
+		for a in preterm:
+			t.append(a.lower())
+		termVectorQS = terms_list.objects.filter(term__in=t)#match searched terms to vectors
+		if not termVectorQS:
+			raise Http404("No match found for your query")
+		termVectors = [[sum(x) for x in zip(*termVectorQS.values_list('termVector', flat=True))]]
+		items = items_list.objects.all()
+		cosDict = {}
 
-		agv = author_grant_vectors.objects.values()
-		for t in agv:
-			agvList.append(list(map(float, t['grantvector'].split())))#Convert the vector strings to a list of floats
+		#creates a list of all cosine scores between the term vector and all item vectors
+		cos = list(cosine_similarity(termVectors,items.values_list('itemVector', flat=True))[0])
 
+		#maps all cosine scores to their respective indexKeys
+		for x in cos:
+			cosDict[cos.index(x)+1] = x
 
-		for x in termList:#This is the main LSA function, it goes through the list of termvectors from the users search, finds the cosine sim with each author/grant vector and stores them in agvResults.
-			count = 0 #The count is to match each cosine similarity with the sql ID of each author grant that it belongs to (as seen in termVectorsFiltered)
-			for y in agvList:
-				count+=1
-				if cosine_similarity([x],[y])[0][0]>.1: #The number here is the threshold for whether or not results are displayed. 
-					agvResults[count] = cosine_similarity([x],[y])[0][0]
-		
-		g = agvResults.keys()
+		#copy any cos values over .1 to a copy of the dict, effectively removing very low similarity scores
+		cosDict = { k : "{:.2f}".format(v) for k,v in cosDict.items() if v>.1}
+		dictSize = len(cosDict)
+		#indexKey lookups to fetch matching items
+		profiles = Investigator.objects.filter(indexKey__in=cosDict.keys())
+		Grants = Grant.objects.filter(indexKey__in=cosDict.keys())
+		ClinicalTrials = ClinicalTrial.objects.filter(indexKey__in=cosDict.keys())
 
-		termVectorsFiltered = author_grant_vectors.objects.filter(id__in=g)
-
-		authorsFiltered = termVectorsFiltered.filter(item__contains='Author').values_list('item')
-		grantsFiltered = termVectorsFiltered.filter(item__contains='Grant').values_list('item')
-		
-		profiles = Investigator.objects.filter(investigator_tag__in=authorsFiltered).values()
-		Grants = grant_documents.objects.filter(grantID__in=grantsFiltered).values()
-		df()
-		return render(request, 'searchFunction/LSI.html',{'Grants' :  Grants, 'profiles' : profiles, 'agvResults' : agvResults})
+		return render(request, 'searchFunction/LSI.html',{'Grants' :  Grants, 'profiles' : profiles, 'ClinicalTrials' : ClinicalTrials, 'cosDict' : cosDict, 'query': LSI_search_query, 'size' : dictSize})
 
 def userprofile(request): 
-	citationList = []
 	if request.method == 'GET':
 		p=(request.GET.get('investigator_tag'))
-		Grants = grant_documents.objects.all()
-		#The p[7:] is here to slice the "Author_" part off of the author tags, as the author tag in author2citation does not contain the "Author_" prefix
-		citations = author2citation.objects.values().filter(author__exact=p[7:])
-		for cList in citations:
-			citationList=(list(map(int, cList['citation_id'].split(","))))
-		publications = Publication.objects.filter(pmid__in=citationList)
 		profiles = Investigator.objects.filter(investigator_tag__exact=p)
-		simAll = authors_grants_pairwise_cosine_similarity_matrix.objects.filter(x_axis__contains=p).filter(cosine_score__gt=.2).exclude(y_axis=p)
-		simGrants = simAll.filter(y_axis__contains='Grant').order_by('-cosine_score').distinct()
-		simAuthors = simAll.filter(y_axis__contains='Author').order_by('-cosine_score').distinct()
-		grantInfo = grant_documents.objects.filter(grantID__in=simGrants.values('y_axis')).distinct()
-		authorInfo = Investigator.objects.filter(investigator_tag__in=simAuthors.values('y_axis')).distinct() 
+		publications = Publication.objects.filter(investigator_tag__contains=p[7:])#slice "author_" off to match inconsistent publication tagging
+		simAll = similarity_matrix.objects.filter(x_axis__in=profiles).filter(cosine_score__gt=.1).values()
+		simGrants = Grant.objects.filter(indexKey__in=simAll.values('y_axis'))
+		simAuthors = Investigator.objects.filter(indexKey__in=simAll.values('y_axis'))
+		simClinicalTrials = ClinicalTrial.objects.filter(indexKey__in=simAll.values('y_axis'))
 		MeshChart.chart(publications)
 		AuthorChart.chart(publications)
 		PublicationHistoryChart.chart(publications)
 
-		return render(request, 'searchFunction/userprofile.html', {'profiles' : profiles, 'simGrants' : simGrants, 'simAuthors' : simAuthors, 'publications':publications} )
+		return render(request, 'searchFunction/userprofile.html', {'profiles' : profiles, 'simGrants' : simGrants, 'simAuthors' : simAuthors, 'simClinicalTrials' : simClinicalTrials, 'publications':publications} )
 

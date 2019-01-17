@@ -8,6 +8,27 @@ font-awesome.min.css">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="http://kozea.github.com/pygal.js/latest/pygal-tooltips.min.js"></script>
 <head>
+	<script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
+  	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.css">
+	<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.js"></script>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<script type="text/javascript">
+		$(document).ready( function () {
+    		$.noConflict();
+    		var table = $('table.display').DataTable( {
+    			"responsive": true,
+    			"ordering":  true,
+    			"searching":   false,
+    			"paging":   false,
+    			"order": [[ 1, "desc" ]],
+    			"aaSorting": [[1, 'desc']]
+    			} );
+		} ); 
+	</script>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
@@ -131,20 +152,18 @@ font-awesome.min.css">
 		<li class="active"><a data-toggle="tab" href="#home">Profile</a></li>
 		<li><a data-toggle="tab" href="#menu1">Publications</a></li>
 		<li><a data-toggle="tab" href="#menu2">Similar Researchers</a></li>
-		<li><a data-toggle="tab" href="#menu3">Recommended Grants</a></li>
+		<li><a data-toggle="tab" href="#menu3">Similar Grants</a></li>
+		<li><a data-toggle="tab" href="#menu4">Similar Clinical Trials</a></li>
 	</ul>
 
 	<div class="tab-content">
 
 		<div id="home" class="tab-pane fade in active">
 			{% for profile in profiles %}
-			<p>{% load static %}<img style="height: 150px; width 150px;" src ="{% static 'profilePictures/' %}{{profile.investigator_tag}}.jpg" alt="No picture available"></p> <!-- Loads the researcher pictures from /HIVE/searchFunction/static/profilePictures/-->
-			<p><h3><b>{{profile.Fname}} {{profile.Lname}}</b></h3></a></p>
-			<p><b>Location :</b> {{profile.city}}, {{profile.state}}, {{profile.country}}</a></p>
-			<p><b>Office :</b> {{profile.office}}</a></p>
-			<p><b>Institution :</b> {{profile.institution}}</a></p>
-			<p><b>Phone :</b> {{profile.phone}}</a></p>
-			<p><b>Department :</b> {{profile.department}}</a></p>
+			<p>{% load static %}<img style="height: 150px; width 150px;" src ="{% static 'profilePictures/avatar.jpg' %}" alt="No picture available"></p> <!-- Loads the researcher pictures from /HIVE/searchFunction/static/profilePictures/-->
+			<p><h3><b>{{profile.fName}} {{ profile.lName}}</b></h3></p>
+			<p><b>Location :</b> {{profile.city}}, {{profile.state}}</a></p>
+			<p><b>Email :</b> {{profile.email}}</a></p>
 			{% endfor %}
 			<hr>
 			<embed type="image/svg+xml" src="../static/mesh_chart.svg" width="600"/>
@@ -157,42 +176,116 @@ font-awesome.min.css">
 
 
 		<div id="menu1" class="tab-pane fade">
-			{% for publication in publications %}
-			<div class="bs-example">
-				<div class="panel-group" id="accordion">
-					<div class="panel panel-default">
-						<div class="panel-heading">
-							<h4 class="panel-title">
-								<a data-toggle="collapse" data-parent="#accordion_{{ forloop.counter }}" href="#collapseTwo_{{ forloop.counter }}">>{{publication.title}}</a>
-							</h4>
-						</div>
-						<div id="collapseTwo_{{ forloop.counter }}" class="panel-collapse collapse">
-							<div class="panel-body">
-								<p><b>Abstract</b> : {{publication.abstract}}</a></p>
-								<p><b>Authors</b> : {{publication.authors| cut:"[" |cut:"]"|cut:"'"}}</p>
-								<p><b>Source</b> : {{publication.source}}</p>
-								<p><b>Date Published</b> : {{publication.datePublished}}</p>
-								<p><b>MeSH Headings</b> : {{publication.meshHeadings| cut:"[" |cut:"]"|cut:"'"}}</p>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
+			<table id="" class="display compact">
+				<thead>
+					<tr>
+						<th>Title</th>
+						<th>Authors</th>
+						<th>Source</th>
+						<th>Publication Date</th>
+						<th>MeSH Headings</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for publication in publications %}
+					<tr>
+						<td>{{publication.title}}</td>
+						<td>{{publication.authors| cut:"[" |cut:"]"|cut:"'"| cut:"\""}}</td>
+						<td>{{publication.source}}</td>
+						<td>{{publication.datePublished}}</td>
+						<td>{{publication.meshHeadings| cut:"[" |cut:"]"|cut:"'"| cut:"\""}}</td>
+					</tr>
 					{% endfor %}
+				</tbody>
+			</table>	
 		</div>
+
 
 
 		<div id="menu2" class="tab-pane fade">
-		{% for simAuthor in simAuthors %}
-		<p>{{simAuthor.y_axis}}</p>
-		{% endfor %}
+			<table id="" class="display compact">
+				<thead>
+					<tr>
+						<th>First Name</th>
+						<th>Last Name</th>
+						<th>Location</th>
+						<th>Link to Profile</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for profile in simAuthors %}
+					<tr>
+						<td>{{profile.fName}}</td>
+						<td>{{profile.lName}}</td>
+						<td>{{profile.city}}, {{ profile.state}}</td>
+						<td><form action="/userprofile/" method="get">
+						{{ form }}
+						<input type="hidden" name="investigator_tag" value="{{profile.investigator_tag}}">
+						<input type="submit" class="btn btn-primary btn-sm" value="Visit Profile" name="btn"/>
+						</form></td>
+					</tr>
+					{% endfor %}
+				</tbody>
+			</table>
 		</div>
 
 		<div id="menu3" class="tab-pane fade">
-		{% for simGrant in simGrants %}
-		<p>{{simGrants.y_axis}}</p>
-		{% endfor %}
+			<table id="" class="display compact">
+				<thead>
+					<tr >
+						<th></th>
+						<th>Cosine Score</th>
+						<th>Grant Title</th>
+						<th>Link</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for grant in simGrants %}
+					<tr data-child-value='Summary: {{Grant.grantText}}'>
+						<td class="details-control"></td>
+						<td>{% for key, value in cosDict.items %}{% if key == Grant.indexKey %}{{value}}{% endif %}{% endfor %}</td>
+						<td>{{Grant.title}}</td>
+
+						<td>{{Grant.guidelink|urlize}}</td>
+				    </tr>
+				    {% endfor %}
+			    </tbody>
+			</table>
 		</div>
+
+		<div id="menu4" class="tab-pane fade">
+			<table id="" class="display compact" style="width:100%">
+				<thead>
+					<tr>
+						<th>Title</th>
+						<th>Cosine Score</th>
+						<!-- <th>Summary</th> -->
+						<th>Status</th>
+						<th>Conditions</th>
+						<!-- <th>Interventions</th> -->
+						<th>Locations</th>
+						<th>Link</th>
+					</tr>
+				</thead>
+				
+				<tbody>
+					{% for ct in ClinicalTrials %}
+					<tr>
+						<td>{{ct.title}}</td>
+						<td>{% for key, value in cosDict.items %}{% if key == ct.indexKey %}{{value}}{% endif %}{% endfor %}</td>
+						<!-- <td>{{ct.ctText}}</td> -->
+						<td>{{ct.status}}</td>
+						<td>{{ct.conditions}}</td>
+						<!-- <td>{{ct.interventions}}</td> -->
+						<td>{{ct.locations}}</td>
+						<td>{{ct.guidelink|urlize}}</td>
+				    </tr>
+				    {% endfor %}
+			    </tbody>
+			</table>
+		</div>
+
+
 
 	</div>
 </body>

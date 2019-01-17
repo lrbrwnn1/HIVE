@@ -1,46 +1,70 @@
 {% extends "./index.html" %}
 {% block terms %}
 
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 
 <style type="text/css">
 .bs-example{
 	margin: 20px;
 }
+
+@import url('//cdn.datatables.net/1.10.2/css/jquery.dataTables.css');
+ td.details-control {
+    background: url('http://www.datatables.net/examples/resources/details_open.png') no-repeat center center;
+    cursor: pointer;
+}
+tr.shown td.details-control {
+    background: url('http://www.datatables.net/examples/resources/details_close.png') no-repeat center center;
+}
 </style>
 
 <head>
-
+	<script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
+  	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.css">
+	<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.js"></script>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.css">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 	<script type="text/javascript">
-		$(function() {
-    $("td[colspan=3]").find("p").hide();
-    $("table").click(function(event) {
-        event.stopPropagation();
-        var $target = $(event.target);
-        if ( $target.closest("td").attr("colspan") > 1 ) {
-            $target.slideUp();
-            $target.closest("tr").prev().find("td:first").html("+");
-        } else {
-            $target.closest("tr").next().find("p").slideToggle();
-            if ($target.closest("tr").find("td:first").html() == "+")
-                $target.closest("tr").find("td:first").html("-");
-            else
-                $target.closest("tr").find("td:first").html("+");                
-        }                    
-    });
-});
-	</script>
+		function format(value) {
+      		return '<div>' + value + '</div>';
+  		}
+		$(document).ready( function () {
+    		$.noConflict();
+    		var table = $('table.display').DataTable( {
+    			"responsive": true,
+    			"ordering":  true,
+    			"searching":   false,
+    			"paging":   true,
+    			"order": [[ 1, "desc" ]],
+    			} );
 
+	    	// Add event listener for opening and closing details
+	      $('table.display').on('click', 'td.details-control', function () {
+	          var tr = $(this).closest('tr');
+	          var row = table.row(tr);
+
+	          if (row.child.isShown()) {
+	              // This row is already open - close it
+	              row.child.hide();
+	              tr.removeClass('shown');
+	          } else {
+	              // Open this row
+	              row.child(format(tr.data('child-value'))).show();
+	              tr.addClass('shown');
+	          }
+	      });
+
+		} ); 
+	</script>
 </head>
 
 <body>
-
+Showing {{size}} researchers, grants and clinical trials for: {{query}} 
 <hr>
-<br />
-<br />
-<br />
+
+
 <div class="span12 alpha">
 	<div class="span8 center vspace-small">
 		<div class="span10 center">
@@ -52,75 +76,108 @@
 					<li>
 						<a href="#Grants" data-toggle="tab">Grants</a>
 					</li>
+					<li>
+						<a href="#ClinicalTrials" data-toggle="tab">Clinical Trials</a>
+					</li>
 				</ul>
 				<div id="explorerTabContent" class="tab-content">
 
 					<div class="tab-pane fade active in" id="Researchers">
-						<div class="container">            
-							<table class="table table-condensed">
-								<thead>
-									<tr>
-										<th>Name</th>
-										<th>Institution</th>
-										<th>Department</th>
-										<th>Cosine Score</th>
-										<th>Link to Profile</th>
-									</tr>
-								</thead>
-								{% for profile in profiles %}
-								<tbody>
-									<tr>
-										<td>{{profile.Fname}} {{ profile.Lname}}</td>
-										<td>{{profile.institution}}</td>
-										<td>{{profile.department}}</td>
-										{% for key, value in agvResults.items %}
-										<td>{% if key == profile.id %}{{value}}{% endif %}</td>
-										{% endfor %}
-										<td><form action="/userprofile/" method="get">
-											{% csrf_token %}
-											{{ form }}
-											<input type="hidden" name="investigator_tag" value="{{profile.investigator_tag}}">
-											<input type="submit" class="btn btn-primary btn-sm" value="Visit Profile" name="btn"/>
-										</form></td>
-										{% endfor %}
-									</tr>
-								</tbody>
-							</table>
-							
-						</div>
-					</div>
-
-
-
-
-					<div class="tab-pane fade" id="Grants">
-							<table class="table table-condensed">
+           
+							<table id="" class="display compact">
 								<thead>
 									<tr>
 										<th></th>
-										<th>Grant Title</th>
 										<th>Cosine Score</th>
+										<th>First Name</th>
+										<th>Last Name</th>
+										<th>Location</th>
+										<th>Link to Profile</th>
 									</tr>
 								</thead>
-								{% for Grant in Grants %}
 								<tbody>
-									<tr><td>+</td><td><p>{{Grant.grantTitle}}</p></td></tr>
-								    <tr><td colspan="3">
-					    				<p><b>Summary</b> : {{Grant.grantText}}</p>
-										<p><b>Source</b> : {{Grant.grantLink|urlize}}</p>
-								    </td></tr>
-							    </tbody>
-							    {% endfor %}
+									{% for profile in profiles %}
+									<tr>
+										<td class="details-control"></td>
+										<td>{% for key, value in cosDict.items %}{% if key == profile.indexKey %}{{value}}{% endif %}{% endfor %}</td>
+										<td>{{profile.fName}}</td>
+										<td>{{profile.lName}}</td>
+										<td>{{profile.city}}, {{ profile.state}}</td>
+										<td><form action="/userprofile/" method="get">
+										{{ form }}
+										<input type="hidden" name="investigator_tag" value="{{profile.investigator_tag}}">
+										<input type="submit" class="btn btn-primary btn-sm" value="Visit Profile" name="btn"/>
+										</form></td>
+									</tr>
+									{% endfor %}
+								</tbody>
+								
 							</table>
+
+					</div>
+
+					<div class="tab-pane fade" id="Grants">
+							<table id="" class="display compact">
+								<thead>
+									<tr>
+										<th></th>
+										<th>Cosine Score</th>
+										<th>Grant Title</th>
+										<th>Link</th>
+									</tr>
+								</thead>
+								
+								<tbody>
+									{% for Grant in Grants %}
+									<tr data-child-value='Summary: {{Grant.grantText}}'>
+										<td class="details-control"></td>
+										<td>{% for key, value in cosDict.items %}{% if key == Grant.indexKey %}{{value}}{% endif %}{% endfor %}</td>
+										<td>{{Grant.title}}</td>
+
+										<td>{{Grant.guidelink|urlize}}</td>
+								    </tr>
+								    {% endfor %}
+							    </tbody>
+							    
+							</table>
+					</div>
+
+					<div class="tab-pane fade" id="ClinicalTrials">
+						<table id="" class="display compact" style="width:100%">
+							<thead>
+								<tr>
+									<th></th>
+									<th>Cosine Score</th>
+									<th>Title</th>
+									<!-- <th>Summary</th> -->
+									<th>Status</th>
+									<th>Conditions</th>
+									<th>Link</th>
+								</tr>
+							</thead>
+							
+							<tbody>
+								{% for ct in ClinicalTrials %}
+									<tr data-child-value='Interventions: {{ct.interventions}}'>
+									<td class="details-control"></td>
+									<td>{% for key, value in cosDict.items %}{% if key == ct.indexKey %}{{value}}{% endif %}{% endfor %}</td>
+									<td>{{ct.title}}</td>
+									<!-- <td>{{ct.ctText}}</td> -->
+									<td>{{ct.status}}</td>
+									<td>{{ct.conditions}}</td>
+									<td>{{ct.guidelink|urlize}}</td>
+							    </tr>
+							    {% endfor %}
+						    </tbody>
+						</table>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
 </div>
-
 </body>
 {% endblock %}
-</html>  
+</html> 
 
 

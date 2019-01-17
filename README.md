@@ -15,6 +15,14 @@ The conceptual search uses latent semantic analysis to find conceptual similarit
 A search for reelin in this mode might return researchers and grants related to researching synaptic plasticity, even if their research does not explicitly mention reelin. 
 
 ## Release History
+* 0.2.0
+    * Clinical trials
+    * Migrated to PostgreSQL
+    * Huge performance improvements (4x faster search times)
+    * Different model for cosine calculation 
+    * Replaced old tables with DataTables
+    * Table sorting and pagination 
+    * Database model changed to include more info and increase performance
 * 0.1.2
     * Added separate tabs for researchers and grants to results page
     * Added publications tab in profiles - lists all available publications from that researcher

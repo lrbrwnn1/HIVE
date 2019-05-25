@@ -19,11 +19,10 @@ class Investigator(models.Model):
 	#department = models.TextField(default=' ')
 	#position = models.TextField(default=' ')
 	email = models.EmailField(default=' ')
-	city = models.TextField(default=' ')
-	state = models.TextField(default=' ')
+	location = models.TextField(default=' ')
 	#country = models.TextField(default=' ')
 	#office = models.CharField(max_length=50,default=' ')
-	#institution = models.TextField(default=' ')
+	affiliation = models.TextField(default=' ')
 	#phone = models.CharField(max_length=25,default=' ')
 	investigator_tag = models.TextField(default=' ')
 

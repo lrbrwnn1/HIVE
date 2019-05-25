@@ -69,7 +69,6 @@ form.example::after {
 #results{
 	position: relative;
 	top:400px;
-	left
 }
 
 </style>
@@ -81,6 +80,7 @@ form.example::after {
 	<div id="navbar" class="w3-top">
 		<div class="w3-bar w3-white w3-padding w3-card" style="letter-spacing:4px;">
 			<a href="/" class="w3-bar-item w3-button">HIVE</a>
+			<a href="#browse" class="w3-bar-item w3-button">BROWSE</a>
 			<!-- Right-sided navbar links. Hide them on small screens-->        
 			<div class="w3-right w3-hide-small">
 				<a href="#about" class="w3-bar-item w3-button" data-toggle="modal" data-target="#aboutModal">ABOUT</a>
@@ -100,9 +100,12 @@ form.example::after {
 <div id="searchbar" class="w3-display-middle  alpha">
 	<form class="form-inline" action="/LSI/" type="get" >
 		<div class="input-prepend input-append text-left">
-			<input id="search_box" name="search_box" type="text" size="40" class="input-xlarge" placeholder="Enter your Query..." required>
+			<input id="search_box" name="search_box" type="text" size="36" class="input-xlarge" placeholder="Enter your Query..." required>
 			<input id="isFlashEnabled" name="isFlashEnabled" type="hidden" value="">
-			<button type="submit" class="btn btn-primary">Search!</button> 
+			<div class = "submits" >
+				<button type="submit" class="btn btn-primary btn-lg" name = "LSI-Search" >LSI Search</button> 
+				<button type="submit" class="btn btn-primary btn-lg" name = "Keyword-Search" formaction="/results/">Keyword Search</button>
+			</div> 
 		</div>
 	</form>
 </div>
@@ -183,7 +186,6 @@ form.example::after {
 					<li>Search Interface - Filters</li>
 				</ul>
 				<br>
-				<br>
 
 				<h3>Search Interface(Overview):</h3>
 
@@ -196,24 +198,10 @@ form.example::after {
 					<p>The search methods available at this time are a keyword search algorithm, and an LSI search algorithm.  What’s the difference between the two?</p>
 					<ul>
 						<li>Keyword Search - A keyword search is what most users will be familiar with. It looks for direct associations between a datum and the given keywords. This is done by measuring how frequently a keyword is seen within that datum. </li>
-						<li>Conceptual Search - A LSI(Latent Semantic Indexing) search differs from keyword search in that it looks for implied associations in a dataset using the given keyword(s). </li>
+						<li>Conceptual Search - The LSI (Latent Semantic Indexing) search differs from keyword search in that it looks for implied associations in a dataset using the given keyword(s). </li>
 					</ul>
-
-
-
-
-
-					<h3>Search Interface (Filters):</h3>
-
-
-					<p style="text-indent: 3em;">As well as several searching methods there are several "filters" that can be applied. Filters basically allow you to specify what datasets you would like to limit your search to. Our current datasets include a list of Grants automatically pulled from the NIH, Biology classes at the University of Memphis, and a set of 57 Investigators and Faculty at University of Memphis. </p>
-					<p style="text-indent: 3em;">When clicking the filter button, you can elect to search all datasets by selecting "Everything." You can also select to search just for Grants, Researchers, or Classes that are relevant to your query. </p>
-					<p style="text-indent: 3em;">While selecting a single dataset or all datasets would be preferable in most cases, sometimes it will be desired to search a "mix-and-match" of different datasets. </p>
-					<p style="text-indent: 3em;">By clicking "Build Custom Filter" you can select any and all datasets you wish to search within. </p>
-					<br>
-
-					<p style="text-indent: 3em;">Simply check the checkboxes next to the datasets you wish to include in your results and click "Close." The filter will then be applied and you can begin searching with it. </p>
 				</div>
+
 				<div class="modal-footer">
 					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 				</div>

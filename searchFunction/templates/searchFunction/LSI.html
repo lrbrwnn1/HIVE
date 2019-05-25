@@ -61,7 +61,7 @@ tr.shown td.details-control {
 </head>
 
 <body>
-Showing {{size}} researchers, grants and clinical trials for: {{query}} 
+<h4>Search Type: <b>Latent Semantic Analysis</b> | Total Results : <b>{{size}}</b> | Collection : <b>Beaumont</b> | Query : <b>{{query}}</b> </h4>
 <hr>
 
 
@@ -91,18 +91,18 @@ Showing {{size}} researchers, grants and clinical trials for: {{query}}
 										<th>Cosine Score</th>
 										<th>First Name</th>
 										<th>Last Name</th>
-										<th>Location</th>
+										<th>Affiliation</th>
 										<th>Link to Profile</th>
 									</tr>
 								</thead>
 								<tbody>
 									{% for profile in profiles %}
-									<tr>
+									<tr data-child-value='Location: {{profile.location}}'>
 										<td class="details-control"></td>
 										<td>{% for key, value in cosDict.items %}{% if key == profile.indexKey %}{{value}}{% endif %}{% endfor %}</td>
 										<td>{{profile.fName}}</td>
 										<td>{{profile.lName}}</td>
-										<td>{{profile.city}}, {{ profile.state}}</td>
+										<td>{{profile.affiliation}}</td>
 										<td><form action="/userprofile/" method="get">
 										{{ form }}
 										<input type="hidden" name="investigator_tag" value="{{profile.investigator_tag}}">

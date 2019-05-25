@@ -22,17 +22,20 @@ from django.http import Http404
 def index(request):
 	return render(request, 'searchFunction/index.html',{})
 
+#TODO: some tables are queried twice, can be simplified to increase performance
 def results(request):
-	print("under construction")
-# 	if request.method == 'GET':
-# 		search_query = request.GET.get('search_param', None)
-# 		grants = Grant.objects.filter(title__icontains=search_query).values('title', 'expiryDate', "guidelink", "openDate", "parentFOA", "agency")
-# 		profiles = Investigator.objects.all()
-# 		return render(request, 'searchFunction/results.html',{'grants': grants, 'profiles' : profiles}) 
+	if request.method == 'GET':
+		search_query = request.GET.get('search_box', None)
+		Grants = Grant.objects.annotate(rank=SearchRank(SearchVector('title', weight='A')+SearchVector('grantText', weight='B'), search_query)).filter(rank__gte=0.01).order_by('-rank')
+		publications = Publication.objects.filter(title__icontains=search_query) | Publication.objects.filter(abstract__icontains=search_query)
+		profiles = Investigator.objects.filter(fullName__icontains=search_query) | Investigator.objects.filter(investigator_tag__in=publications.values('investigator_tag'))
+		ClinicalTrials = ClinicalTrial.objects.filter(title__icontains=search_query).annotate(rank=SearchRank(SearchVector('title', weight='A'), search_query)).filter(rank__gte=0.01).order_by('-rank')
+		querySize = ClinicalTrials.count() + profiles.count() + Grants.count()
+		g = Grants.values()
+		return render(request, 'searchFunction/results.html',{'Grants' : Grants, 'profiles' : profiles, 'ClinicalTrials' : ClinicalTrials, 'query': search_query, 'size' : querySize}) 
 
-#Here we have the term matched to its vector, 
-#then take the vectors and iterate through all author/grant vectors and find the cos value for each combination dynamically
 
+#Here we have the term matched to its vector, then take the vectors and iterate through all author/grant vectors and find the cos value for each combination dynamically
 def LSI(request):
 	if request.method == 'GET':
 		t=[]
@@ -62,20 +65,32 @@ def LSI(request):
 		Grants = Grant.objects.filter(indexKey__in=cosDict.keys())
 		ClinicalTrials = ClinicalTrial.objects.filter(indexKey__in=cosDict.keys())
 
-		return render(request, 'searchFunction/LSI.html',{'Grants' :  Grants, 'profiles' : profiles, 'ClinicalTrials' : ClinicalTrials, 'cosDict' : cosDict, 'query': LSI_search_query, 'size' : dictSize})
+		return render(request, 'searchFunction/LSI.html',{'Grants' : Grants, 'profiles': profiles, 'ClinicalTrials' : ClinicalTrials, 'cosDict' : cosDict, 'query': LSI_search_query, 'size' : dictSize})
+
+#TODO: Finish this
+def browse(request):
+	if request.method == 'GET':
+		Grants = Grant.objects.all()
+		ClinicalTrials = ClinicalTrial.objects.all()
+		profiles = Investigator.objects.all()
+		querySize = ClinicalTrials.count() + profiles.count() + Grants.count()
+
+		return render(request, 'searchFunction/browse.html',{'Grants' : Grants, 'profiles': profiles, 'ClinicalTrials' : ClinicalTrials, 'size' : querySize})
+
+#TODO: Investigator table is queried twice here, call Investigator.all() once then query that to increase performance!
 
 def userprofile(request): 
 	if request.method == 'GET':
 		p=(request.GET.get('investigator_tag'))
 		profiles = Investigator.objects.filter(investigator_tag__exact=p)
-		publications = Publication.objects.filter(investigator_tag__contains=p[7:])#slice "author_" off to match inconsistent publication tagging
-		simAll = similarity_matrix.objects.filter(x_axis__in=profiles).filter(cosine_score__gt=.1).values()
-		simGrants = Grant.objects.filter(indexKey__in=simAll.values('y_axis'))
-		simAuthors = Investigator.objects.filter(indexKey__in=simAll.values('y_axis'))
-		simClinicalTrials = ClinicalTrial.objects.filter(indexKey__in=simAll.values('y_axis'))
+		publications = Publication.objects.filter(investigator_tag__contains=p)#slice "author_" off to match inconsistent publication tagging
+		simAll = similarity_matrix.objects.filter(y_axis__in=profiles).filter(cosine_score__gt=0)
+		simGrants = Grant.objects.filter(indexKey__in=simAll.values('x_axis'))
+		simAuthors = Investigator.objects.filter(indexKey__in=simAll.values('x_axis'))
+		simClinicalTrials = ClinicalTrial.objects.filter(indexKey__in=simAll.values('x_axis'))
 		MeshChart.chart(publications)
 		AuthorChart.chart(publications)
 		PublicationHistoryChart.chart(publications)
 
-		return render(request, 'searchFunction/userprofile.html', {'profiles' : profiles, 'simGrants' : simGrants, 'simAuthors' : simAuthors, 'simClinicalTrials' : simClinicalTrials, 'publications':publications} )
+		return render(request, 'searchFunction/userprofile.html', {'profiles' : profiles, 'simAll' : simAll, 'simGrants' : simGrants, 'simAuthors' : simAuthors, 'simClinicalTrials' : simClinicalTrials, 'publications':publications} )
 

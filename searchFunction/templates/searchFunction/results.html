@@ -1,61 +1,178 @@
 {% extends "./index.html" %}
-<!--Grant Results are inserted into the page here-->
-{% block content %}
-<h3>Grants:</h3>
-{% for grant in grants %}
-<div class="bs-example">
-    <div class="panel-group" id="accordion">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h4 class="panel-title">
-                    <a data-toggle="collapse" data-parent="#accordion_{{ forloop.counter }}" href="#collapseOne_{{ forloop.counter }}">{{grant.title}}</a>
-                </h4>
-            </div>
-            <div id="collapseOne_{{ forloop.counter }}" class="panel-collapse collapse">
-                <div class="panel-body">
-		        	<p>Sponsor: {{grant.agency}}</p>
-		        	<p>Parent FOA: {{grant.parentFOA}}</p>
-		        	<p>Open Date: {{grant.openDate}}</p>
-	        		<p>Expiration Date: {{grant.expiryDate}}</p>
-	        		<p>Link: <a href={{grant.guidelink}}>{{grant.guidelink}}</a></p>
-                </div>
-            </div>
-        </div>
-    </div>
+{% block terms %}
+
+
+<style type="text/css">
+.bs-example{
+	margin: 20px;
+}
+
+@import url('//cdn.datatables.net/1.10.2/css/jquery.dataTables.css');
+ td.details-control {
+    background: url('http://www.datatables.net/examples/resources/details_open.png') no-repeat center center;
+    cursor: pointer;
+}
+tr.shown td.details-control {
+    background: url('http://www.datatables.net/examples/resources/details_close.png') no-repeat center center;
+}
+</style>
+
+<head>
+	<script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
+  	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.css">
+	<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.js"></script>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<script type="text/javascript">
+		function format(value) {
+      		return '<div>' + value + '</div>';
+  		}
+		$(document).ready( function () {
+    		$.noConflict();
+    		var table = $('table.display').DataTable( {
+    			"responsive": true,
+    			"ordering":  true,
+    			"searching":   false,
+    			"paging":   true,
+    			"order": [[ 1, "desc" ]],
+    			} );
+
+	    	// Add event listener for opening and closing details
+	      $('table.display').on('click', 'td.details-control', function () {
+	          var tr = $(this).closest('tr');
+	          var row = table.row(tr);
+
+	          if (row.child.isShown()) {
+	              // This row is already open - close it
+	              row.child.hide();
+	              tr.removeClass('shown');
+	          } else {
+	              // Open this row
+	              row.child(format(tr.data('child-value'))).show();
+	              tr.addClass('shown');
+	          }
+	      });
+
+		} ); 
+	</script>
+</head>
+
+<body>
+<h4>Search Type: <b>Keyword Ranking</b> | Total Results : <b>{{size}}</b> | Collection : <b>Beaumont</b> | Query : <b>{{query}}</b>  </h4>
+<hr>
+
+
+<div class="span12 alpha">
+	<div class="span8 center vspace-small">
+		<div class="span10 center">
+			<div class="span12 well">
+				<ul class="nav nav-tabs">
+					<li class="active">
+						<a href="#Researchers" data-toggle="tab">Researchers</a>
+					</li>
+					<li>
+						<a href="#Grants" data-toggle="tab">Grants</a>
+					</li>
+					<li>
+						<a href="#ClinicalTrials" data-toggle="tab">Clinical Trials</a>
+					</li>
+				</ul>
+				<div id="explorerTabContent" class="tab-content">
+
+					<div class="tab-pane fade active in" id="Researchers">
+           
+							<table id="" class="display compact">
+								<thead>
+									<tr>
+										<th></th>
+										<th>First Name</th>
+										<th>Last Name</th>
+										<th>Affiliation</th>
+										<th>Link to Profile</th>
+									</tr>
+								</thead>
+								<tbody>
+									{% for profile in profiles %}
+									<tr data-child-value='Location: {{profile.location | slice:"1:-1"}} '>
+										<td class="details-control"></td>
+										<td>{{profile.fName}}</td>
+										<td>{{profile.lName}}</td>
+										<td>{{profile.affiliation}}</td>
+										<td><form action="/userprofile/" method="get">
+										{{ form }}
+										<input type="hidden" name="investigator_tag" value="{{profile.investigator_tag}}">
+										<input type="submit" class="btn btn-primary btn-sm" value="Visit Profile" name="btn"/>
+										</form></td>
+									</tr>
+									{% endfor %}
+								</tbody>
+								
+							</table>
+
+					</div>
+
+					<div class="tab-pane fade" id="Grants">
+							<table id="" class="display compact">
+								<thead>
+									<tr>
+										<th></th>
+										<th>Rank</th>
+										<th>Grant Title</th>
+										<th>Link</th>
+									</tr>
+								</thead>
+								
+								<tbody>
+									{% for Grant in Grants %}
+									<tr data-child-value='Summary: {{Grant.grantText}}'>
+										<td class="details-control"></td>
+										<td>{{Grant.rank}}</td>
+										<td>{{Grant.title}}</td>
+										<td>{{Grant.guidelink|urlize}}</td>
+								    </tr>
+								    {% endfor %}
+							    </tbody>
+							    
+							</table>
+					</div>
+
+					<div class="tab-pane fade" id="ClinicalTrials">
+						<table id="" class="display compact" style="width:100%">
+							<thead>
+								<tr>
+									<th></th>
+									<th>Rank</th>
+									<th>Title</th>
+									<!-- <th>Summary</th> -->
+									<th>Status</th>
+									<th>Conditions</th>
+									<th>Link</th>
+								</tr>
+							</thead>
+							
+							<tbody>
+								{% for ct in ClinicalTrials %}
+									<tr data-child-value='Interventions: {{ct.interventions}}'>
+									<td class="details-control"></td>
+									<td>{{ct.rank}}</td>
+									<td>{{ct.title}}</td>
+									<!-- <td>{{ct.ctText}}</td> -->
+									<td>{{ct.status}}</td>
+									<td>{{ct.conditions}}</td>
+									<td>{{ct.guidelink|urlize}}</td>
+							    </tr>
+							    {% endfor %}
+						    </tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>
 </body>
-</html>  
-{% endfor %}
 {% endblock %}
-
-<!--Researcher Results are inserted into the page here-->
-
-{% block researchers %}
-<h3>Researchers:</h3>
-{% for profile in profiles %}
-<div class="bs-example">
-    <div class="panel-group" id="accordion">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h4 class="panel-title">
-                    <a data-toggle="collapse" data-parent="#accordion_{{ forloop.counter }}" href="#collapseTwo_{{ forloop.counter }}"> {{profile.name}}</a>
-                </h4>
-            </div>
-            <div id="collapsetTwo_{{ forloop.counter }}" class="panel-collapse collapse">
-                <div class="panel-body">
-	<!-- <a href= "{% url 'blog:userprofile' user.userprofile.id %}">Profile</a> -->
-                    <p>Location : {{profile.city}}, {{profile.state}}, {{profile.country}}</a></p>
-                    <p>Office : {{profile.office}}</a></p>
-                    <p>Institution : {{profile.institution}}</a></p>
-                    <p>Phone : {{profile.phone}}</a></p>
-                    <p>Department : {{profile.department}}</a></p>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-</body>
-</html>  
-{% endfor %}
-{% endblock %}
+</html> 

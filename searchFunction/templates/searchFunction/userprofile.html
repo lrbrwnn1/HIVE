@@ -1,5 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
+<style type="text/css">
+.bs-example{
+	margin: 20px;
+}
+
+@import url('//cdn.datatables.net/1.10.2/css/jquery.dataTables.css');
+ td.details-control {
+    background: url('http://www.datatables.net/examples/resources/details_open.png') no-repeat center center;
+    cursor: pointer;
+}
+tr.shown td.details-control {
+    background: url('http://www.datatables.net/examples/resources/details_close.png') no-repeat center center;
+}
+</style>
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/
 font-awesome.min.css">
@@ -17,16 +31,35 @@ font-awesome.min.css">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 	<script type="text/javascript">
+		function format(value) {
+      		return '<div>' + value + '</div>';
+  		}
 		$(document).ready( function () {
     		$.noConflict();
     		var table = $('table.display').DataTable( {
     			"responsive": true,
     			"ordering":  true,
     			"searching":   false,
-    			"paging":   false,
+    			"paging":   true,
     			"order": [[ 1, "desc" ]],
-    			"aaSorting": [[1, 'desc']]
     			} );
+
+	    	// Add event listener for opening and closing details
+	      $('table.display').on('click', 'td.details-control', function () {
+	          var tr = $(this).closest('tr');
+	          var row = table.row(tr);
+
+	          if (row.child.isShown()) {
+	              // This row is already open - close it
+	              row.child.hide();
+	              tr.removeClass('shown');
+	          } else {
+	              // Open this row
+	              row.child(format(tr.data('child-value'))).show();
+	              tr.addClass('shown');
+	          }
+	      });
+
 		} ); 
 	</script>
 	<meta charset="utf-8">
@@ -206,6 +239,8 @@ font-awesome.min.css">
 			<table id="" class="display compact">
 				<thead>
 					<tr>
+						<th></th>
+						<th>Cosine Score</th>
 						<th>First Name</th>
 						<th>Last Name</th>
 						<th>Location</th>
@@ -215,6 +250,8 @@ font-awesome.min.css">
 				<tbody>
 					{% for profile in simAuthors %}
 					<tr>
+						<td class="details-control"></td>
+						<td>{% for key, value in simAll.items %}{% if key == profile.indexKey %}{{value}}{% endif %}{% endfor %}</td>
 						<td>{{profile.fName}}</td>
 						<td>{{profile.lName}}</td>
 						<td>{{profile.city}}, {{ profile.state}}</td>
@@ -226,30 +263,33 @@ font-awesome.min.css">
 					</tr>
 					{% endfor %}
 				</tbody>
+				
 			</table>
 		</div>
 
 		<div id="menu3" class="tab-pane fade">
 			<table id="" class="display compact">
 				<thead>
-					<tr >
+					<tr>
 						<th></th>
 						<th>Cosine Score</th>
 						<th>Grant Title</th>
 						<th>Link</th>
 					</tr>
 				</thead>
+				
 				<tbody>
-					{% for grant in simGrants %}
+					{% for Grant in simGrants %}
 					<tr data-child-value='Summary: {{Grant.grantText}}'>
 						<td class="details-control"></td>
-						<td>{% for key, value in cosDict.items %}{% if key == Grant.indexKey %}{{value}}{% endif %}{% endfor %}</td>
+						<td>{% for key, value in simAll.items %}{% if key == Grant.indexKey %}{{value}}{% endif %}{% endfor %}</td>
 						<td>{{Grant.title}}</td>
 
 						<td>{{Grant.guidelink|urlize}}</td>
 				    </tr>
 				    {% endfor %}
 			    </tbody>
+			    
 			</table>
 		</div>
 
@@ -257,27 +297,25 @@ font-awesome.min.css">
 			<table id="" class="display compact" style="width:100%">
 				<thead>
 					<tr>
-						<th>Title</th>
+						<th></th>
 						<th>Cosine Score</th>
+						<th>Title</th>
 						<!-- <th>Summary</th> -->
 						<th>Status</th>
 						<th>Conditions</th>
-						<!-- <th>Interventions</th> -->
-						<th>Locations</th>
 						<th>Link</th>
 					</tr>
 				</thead>
 				
 				<tbody>
-					{% for ct in ClinicalTrials %}
-					<tr>
+					{% for ct in simClinicalTrials %}
+						<tr data-child-value='Interventions: {{ct.interventions}}'>
+						<td class="details-control"></td>
+						<td>{% for key, value in simAll.items %}{% if key == ct.indexKey %}{{value}}{% endif %}{% endfor %}</td>
 						<td>{{ct.title}}</td>
-						<td>{% for key, value in cosDict.items %}{% if key == ct.indexKey %}{{value}}{% endif %}{% endfor %}</td>
 						<!-- <td>{{ct.ctText}}</td> -->
 						<td>{{ct.status}}</td>
 						<td>{{ct.conditions}}</td>
-						<!-- <td>{{ct.interventions}}</td> -->
-						<td>{{ct.locations}}</td>
 						<td>{{ct.guidelink|urlize}}</td>
 				    </tr>
 				    {% endfor %}

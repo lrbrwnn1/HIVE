@@ -2,17 +2,21 @@
 # HIVE
 > A research collaboration engine
 
-Hive is a django-based webtool designed to help researchers collaborate and find suitable grants for their research. The search tool has two modes: basic keywork search and LSA-powered conceptual search. 
+Hive is a django-based webtool designed to help researchers collaborate and find suitable grants and clinical trials for their research.
+
+Each researcher also has a dynamically generated profile, populated by our webscrapers, that gives users information about their research interests, publication history, and which grant/clinical trials/researchers are similar to them.
+
+The search tool has two modes: basic keyword search and LSA-powered conceptual search. 
 
 
 
 ## Usage examples
 Users can search for a term relevant to their research interests. 
 
-The keyword search will return concrete results based on simple keyword lookup with respect to grant opportunities and researcher publications. Searching for reelin, for example, will return researchers whose publications frequently contain the word reelin, and grants containing the word reelin. 
+The keyword search will return concrete results based on simple keyword lookup with respect to grant opportunities and researcher publications. Searching for reelin, for example, will return researchers whose publications frequently contain the word reelin, and grants/clinical trials containing the word reelin. 
 
 The conceptual search uses latent semantic analysis to find conceptual similarities between publications and potential grants.
-A search for reelin in this mode might return researchers and grants related to researching synaptic plasticity, even if their research does not explicitly mention reelin. 
+A search for reelin in this mode might return researchers, grants and clinical trials related to researching synaptic plasticity, even if their research does not explicitly mention reelin. This conceptual mapping allows users to discover previously hidden associations.
 
 ## Release History
 * 0.2.0

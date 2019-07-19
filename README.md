@@ -19,6 +19,15 @@ The conceptual search uses latent semantic analysis to find conceptual similarit
 A search for reelin in this mode might return researchers, grants and clinical trials related to researching synaptic plasticity, even if their research does not explicitly mention reelin. This conceptual mapping allows users to discover previously hidden associations.
 
 ## Release History
+* 1.0.0
+    * Added affiliation tracking for researchers
+    * Overhaul of keyword search
+    * Keyword search lexeme ranking system
+    * Significant performance increase on profile pages and LSI search
+    * Rewrote pubscraper
+    * Better error handling
+    * UI tweaks
+    * Bugfixes
 * 0.2.0
     * Clinical trials
     * Migrated to PostgreSQL
